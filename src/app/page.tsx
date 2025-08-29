@@ -1,95 +1,72 @@
 import Image from "next/image";
 import styles from "./page.module.css";
+import { client } from "../../lib/sanity.client";
+import { getAllPianistsQuery } from "../../lib/queries";
 
-export default function Home() {
+interface Pianist {
+  _id: string;
+  name: string;
+  dateBorn: string;
+  dateDead?: string;
+  biography: string;
+  imageUrl?: string;
+}
+
+async function getPianists(): Promise<Pianist[]> {
+  return await client.fetch(getAllPianistsQuery);
+}
+
+function formatYear(dateString: string): string {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return date.getFullYear().toString();
+}
+
+export default async function Home() {
+  const pianists = await getPianists();
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
+        <h1 className={styles.title}>Chopin Index - Pianists</h1>
+        
+        {pianists.length === 0 ? (
+          <div className={styles.emptyState}>
+            <p>No pianists found. Add some pianists in your Sanity Studio!</p>
+            <a 
+              href="/studio" 
+              className={styles.primary}
+            >
+              Open Sanity Studio
+            </a>
+          </div>
+        ) : (
+          <div className={styles.pianistsGrid}>
+            {pianists.map((pianist) => (
+              <div key={pianist._id} className={styles.pianistCard}>
+                {pianist.imageUrl && (
+                  <div className={styles.pianistImage}>
+                    <Image
+                      src={pianist.imageUrl}
+                      alt={`Portrait of ${pianist.name}`}
+                      width={200}
+                      height={200}
+                      className={styles.portrait}
+                    />
+                  </div>
+                )}
+                <div className={styles.pianistInfo}>
+                  <h2 className={styles.pianistName}>{pianist.name}</h2>
+                  <p className={styles.pianistYears}>
+                    {formatYear(pianist.dateBorn)} - {pianist.dateDead ? formatYear(pianist.dateDead) : 'Present'}
+                  </p>
+                  <p className={styles.pianistBio}>{pianist.biography}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }

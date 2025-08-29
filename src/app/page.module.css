@@ -32,6 +32,92 @@
   flex-direction: column;
   gap: 32px;
   grid-row-start: 2;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  color: var(--foreground);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--gray-alpha-100);
+  border-radius: 12px;
+  border: 1px solid var(--gray-alpha-200);
+}
+
+.emptyState p {
+  margin: 0 0 24px 0;
+  font-size: 1.1rem;
+  color: var(--foreground);
+}
+
+.pianistsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.pianistCard {
+  background: var(--gray-alpha-100);
+  border: 1px solid var(--gray-alpha-200);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pianistCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.pianistImage {
+  display: flex;
+  justify-content: center;
+}
+
+.portrait {
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid var(--gray-alpha-200);
+}
+
+.pianistInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pianistName {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--foreground);
+}
+
+.pianistYears {
+  font-size: 0.9rem;
+  color: var(--gray-alpha-200);
+  margin: 0;
+  font-weight: 500;
+}
+
+.pianistBio {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--foreground);
+  opacity: 0.8;
 }
 
 .main ol {
@@ -133,6 +219,19 @@ a.secondary {
 
   .main {
     align-items: center;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .pianistsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pianistCard {
+    padding: 16px;
   }
 
   .main ol {
