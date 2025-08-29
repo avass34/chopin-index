@@ -21,3 +21,26 @@ export const getPianistBySlugQuery = groq`
     "imageUrl": image.asset->url
   }
 `
+
+export const getAllWorksQuery = groq`
+  *[_type == "work"] | order(yearOfComposition desc) {
+    _id,
+    pieceTitle,
+    opusNumber,
+    yearOfComposition,
+    duration,
+    description,
+    movements,
+    "imageUrl": image.asset->url,
+    "notablePerformers": notablePerformers[]->{
+      _id,
+      name
+    },
+    "podcastHighlights": podcastHighlights[]->{
+      _id,
+      title,
+      timestamp,
+      description
+    }
+  }
+`

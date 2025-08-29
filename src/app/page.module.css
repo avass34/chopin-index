@@ -44,6 +44,21 @@
   color: var(--foreground);
 }
 
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--foreground);
+  border-bottom: 2px solid var(--gray-alpha-200);
+  padding-bottom: 12px;
+}
+
 .emptyState {
   text-align: center;
   padding: 60px 20px;
@@ -56,6 +71,162 @@
   margin: 0 0 24px 0;
   font-size: 1.1rem;
   color: var(--foreground);
+}
+
+.worksGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.workCard {
+  background: var(--gray-alpha-100);
+  border: 1px solid var(--gray-alpha-200);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.workCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.workImage {
+  display: flex;
+  justify-content: center;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid var(--gray-alpha-200);
+}
+
+.workInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.workTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--foreground);
+}
+
+.workMeta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.opus {
+  background: var(--gray-alpha-200);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.year {
+  background: var(--gray-alpha-200);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.duration {
+  background: var(--gray-alpha-200);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.workDescription {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  color: var(--foreground);
+  opacity: 0.8;
+}
+
+.movements {
+  font-size: 0.9rem;
+}
+
+.movements ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.movements li {
+  margin-bottom: 4px;
+  color: var(--foreground);
+  opacity: 0.8;
+}
+
+.performers {
+  font-size: 0.9rem;
+}
+
+.performerTags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.performerTag {
+  background: var(--gray-alpha-200);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: var(--foreground);
+  opacity: 0.8;
+}
+
+.podcastHighlights {
+  font-size: 0.9rem;
+}
+
+.podcastList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.podcastItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--gray-alpha-100);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--gray-alpha-200);
+}
+
+.podcastTitle {
+  font-size: 0.85rem;
+  color: var(--foreground);
+  opacity: 0.9;
+}
+
+.podcastTimestamp {
+  font-size: 0.8rem;
+  color: var(--foreground);
+  opacity: 0.7;
+  font-family: var(--font-geist-mono);
 }
 
 .pianistsGrid {
@@ -223,6 +394,25 @@ a.secondary {
 
   .title {
     font-size: 2rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .worksGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .workCard {
+    padding: 16px;
+  }
+
+  .workMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 
   .pianistsGrid {
