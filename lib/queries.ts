@@ -127,3 +127,14 @@ export const getWorksByPianistQuery = groq`
     description
   }
 `
+
+export const getChopinProfileQuery = groq`
+  *[_type == "chopinProfile"][0] {
+    _id,
+    "profileImageUrl": profileImage.asset->url,
+    "profileImageAlt": profileImage.alt,
+    birthDate,
+    deathDate,
+    biography
+  }
+`
