@@ -1,0 +1,30 @@
+{
+  "_type": "pianist",
+  "name": "Arthur Rubinstein",
+  "slug": {
+    "_type": "slug",
+    "current": "arthur-rubinstein"
+  },
+  "dateBorn": "1887-01-28",
+  "dateDead": "1982-12-20",
+  "biography": "Arthur Rubinstein was a Polish-American classical pianist who is widely considered one of the greatest pianists of the 20th century. Born in Łódź, Poland, he made his debut at the age of 7 and went on to perform for over 80 years. Rubinstein was particularly renowned for his interpretations of Chopin's works, bringing out the composer's Polish heritage and emotional depth. His recordings of Chopin's complete works remain definitive interpretations. Rubinstein's playing was characterized by its warmth, lyricism, and technical brilliance. He was also known for his charismatic personality and love of life, which shone through in his performances.",
+  "image": {
+    "_type": "image",
+    "asset": {
+      "_type": "reference",
+      "_ref": "image-arthur-rubinstein-portrait"
+    },
+    "hotspot": {
+      "x": 0.5,
+      "y": 0.5,
+      "height": 1,
+      "width": 1
+    },
+    "crop": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    }
+  }
+}

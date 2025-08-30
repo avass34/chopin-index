@@ -1,0 +1,66 @@
+{
+  "_type": "work",
+  "pieceTitle": "Nocturne in E-flat Major, Op. 9, No. 2",
+  "slug": {
+    "_type": "slug",
+    "current": "nocturne-in-eb-major-opus-9-no-2"
+  },
+  "category": "nocturne",
+  "key": "Eb",
+  "opusNumber": "Op. 9, No. 2",
+  "yearOfComposition": 1830,
+  "duration": "00:04:30",
+  "description": "One of Chopin's most beloved nocturnes, this piece exemplifies the composer's mastery of the form. Written in E-flat major, it features a beautiful, flowing melody over a gentle left-hand accompaniment. The piece is characterized by its lyrical, song-like quality and emotional depth. The middle section provides contrast with its more dramatic and passionate character before returning to the serene opening theme. This nocturne has become one of Chopin's most recognizable works and is frequently performed by pianists worldwide.",
+  "movements": [],
+  "imslpImage": {
+    "_type": "image",
+    "asset": {
+      "_type": "reference",
+      "_ref": "image-nocturne-op9-no2-imslp"
+    },
+    "hotspot": {
+      "x": 0.5,
+      "y": 0.5,
+      "height": 1,
+      "width": 1
+    },
+    "crop": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    },
+    "alt": "Sheet music for Chopin's Nocturne in E-flat Major, Op. 9, No. 2"
+  },
+  "imslpLink": "https://imslp.org/wiki/Nocturne_in_E-flat_major%2C_Op.9_No.2_(Chopin%2C_Fr%C3%A9d%C3%A9ric)",
+  "notablePerformers": [
+    {
+      "_type": "reference",
+      "_ref": "pianist-arthur-rubinstein"
+    },
+    {
+      "_type": "reference",
+      "_ref": "pianist-martha-argerich"
+    }
+  ],
+  "podcastHighlights": [
+    {
+      "_type": "object",
+      "podcast": {
+        "_type": "reference",
+        "_ref": "podcastSnippet-season-1-episode-3-chopins-nocturnes"
+      },
+      "spotifyTimestamp": "00:15:30",
+      "youtubeTimestamp": "00:15:45"
+    },
+    {
+      "_type": "object",
+      "podcast": {
+        "_type": "reference",
+        "_ref": "podcastSnippet-season-2-episode-1-chopins-most-popular-works"
+      },
+      "spotifyTimestamp": "00:08:15",
+      "youtubeTimestamp": "00:08:20"
+    }
+  ]
+}

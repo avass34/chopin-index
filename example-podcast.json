@@ -1,0 +1,34 @@
+{
+  "_type": "podcastSnippet",
+  "title": "Chopin's Nocturnes: The Night Music of a Genius",
+  "slug": {
+    "_type": "slug",
+    "current": "season-1-episode-3-chopins-nocturnes"
+  },
+  "seasonNumber": 1,
+  "episodeNumber": 3,
+  "image": {
+    "_type": "image",
+    "asset": {
+      "_type": "reference",
+      "_ref": "image-podcast-nocturnes-episode"
+    },
+    "hotspot": {
+      "x": 0.5,
+      "y": 0.5,
+      "height": 1,
+      "width": 1
+    },
+    "crop": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    },
+    "alt": "Podcast artwork featuring a moonlit piano and sheet music for Chopin's nocturnes"
+  },
+  "spotifyUrl": "https://open.spotify.com/episode/1234567890abcdef",
+  "youtubeUrl": "https://www.youtube.com/watch?v=example123",
+  "description": "In this episode, we explore Chopin's revolutionary nocturnes and how they transformed the genre. We'll discuss the influence of John Field, Chopin's innovations in the form, and examine some of his most beautiful nocturnes including the famous Op. 9, No. 2. Join us as we discover why these pieces continue to captivate audiences nearly 200 years after they were written.",
+  "duration": "00:45:30"
+}

@@ -153,3 +153,11 @@ export const getChopinProfileQuery = groq`
     biography
   }
 `
+
+export const getAllImageGalleryQuery = groq`
+  *[_type == "imageGallery"] | order(_createdAt desc) {
+    _id,
+    title,
+    "imageUrl": image.asset->url
+  }
+`

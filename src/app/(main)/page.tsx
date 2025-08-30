@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { client } from "../../../lib/sanity.client";
-import { getAllWorksQuery, getAllPodcastSnippetsQuery } from "../../../lib/queries";
+import { getAllWorksQuery, getAllPodcastSnippetsQuery, getChopinProfileQuery } from "../../../lib/queries";
 
 interface Work {
   _id: string;
@@ -35,6 +35,21 @@ interface PodcastEpisode {
   youtubeUrl?: string;
 }
 
+interface ChopinProfile {
+  _id: string;
+  profileImageUrl?: string;
+  profileImageAlt?: string;
+  birthDate: string;
+  deathDate: string;
+  biography: Array<{
+    _type: string;
+    children?: Array<{
+      _type: string;
+      text: string;
+    }>;
+  }>;
+}
+
 async function getWorks(): Promise<Work[]> {
   return await client.fetch(getAllWorksQuery);
 }
@@ -43,19 +58,11 @@ async function getPodcastEpisodes(): Promise<PodcastEpisode[]> {
   return await client.fetch(getAllPodcastSnippetsQuery);
 }
 
-function formatDuration(duration: string): string {
-  // Convert HH:MM:SS to readable format
-  const parts = duration.split(':');
-  if (parts.length === 3) {
-    const hours = parseInt(parts[0]);
-    const minutes = parseInt(parts[1]);
-    if (hours > 0) {
-      return `${hours}h ${minutes}m`;
-    }
-    return `${minutes}m`;
-  }
-  return duration;
+async function getChopinProfile(): Promise<ChopinProfile | null> {
+  return await client.fetch(getChopinProfileQuery);
 }
+
+
 
 function formatPodcastDuration(seconds: number): string {
   const minutes = Math.floor(seconds / 60);
@@ -85,100 +92,94 @@ function formatCategory(category: string): string {
   return categoryMap[category] || category;
 }
 
+function getCategoryStats(works: Work[]) {
+  const categoryCounts: { [key: string]: number } = {};
+  
+  works.forEach(work => {
+    const category = work.category;
+    categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+  });
+  
+  return Object.entries(categoryCounts).map(([category, count]) => ({
+    category,
+    displayName: formatCategory(category),
+    count
+  })).sort((a, b) => b.count - a.count);
+}
+
 export default async function Home() {
-  const [works, episodes] = await Promise.all([getWorks(), getPodcastEpisodes()]);
+  const [works, episodes, chopinProfile] = await Promise.all([
+    getWorks(), 
+    getPodcastEpisodes(), 
+    getChopinProfile()
+  ]);
+
+  const categoryStats = getCategoryStats(works);
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <h1 className={styles.title}>Chopin Index</h1>
         
-        {/* Works Section */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Musical Works</h2>
-          
-          {works.length === 0 ? (
-            <div className={styles.emptyState}>
-              <p>No works found. Add some works in your Sanity Studio!</p>
-              <a 
-                href="/studio" 
-                className={styles.primary}
-              >
-                Open Sanity Studio
-              </a>
-            </div>
-          ) : (
-            <div className={styles.worksGrid}>
-              {works.map((work) => (
-                <div key={work._id} className={styles.workCard}>
-                  <Link href={`/works/${work.slug}`} className={styles.workLink}>
-                    <div className={styles.workInfo}>
-                      <h3 className={styles.workTitle}>{work.pieceTitle}</h3>
-                      <div className={styles.workMeta}>
-                        <span className={styles.category}>{formatCategory(work.category)}</span>
-                        {work.opusNumber && <span className={styles.opus}>{work.opusNumber}</span>}
-                        <span className={styles.year}>{work.yearOfComposition}</span>
-                        <span className={styles.duration}>{formatDuration(work.duration)}</span>
-                      </div>
-                      <p className={styles.workDescription}>{work.description}</p>
-                      
-                      {work.movements && work.movements.length > 0 && (
-                        <div className={styles.movements}>
-                          <strong>Movements:</strong>
-                          <ul>
-                            {work.movements.map((movement, index) => (
-                              <li key={index}>{movement}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                      
-                      {work.podcastHighlights && work.podcastHighlights.length > 0 && (
-                        <div className={styles.podcastHighlights}>
-                          <strong>Podcast Highlights:</strong>
-                          <div className={styles.podcastList}>
-                            {work.podcastHighlights.map((highlight) => (
-                              <div key={highlight.podcast._id} className={styles.podcastItem}>
-                                <span className={styles.podcastTitle}>{highlight.podcast.title}</span>
-                                <div className={styles.podcastTimestamps}>
-                                  {highlight.spotifyTimestamp && (
-                                    <span className={styles.podcastTimestamp}>Spotify: {highlight.spotifyTimestamp}</span>
-                                  )}
-                                  {highlight.youtubeTimestamp && (
-                                    <span className={styles.podcastTimestamp}>YouTube: {highlight.youtubeTimestamp}</span>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </Link>
-                  
-                  {work.notablePerformers && work.notablePerformers.length > 0 && (
-                    <div className={styles.performers}>
-                      <strong>Notable Performers:</strong>
-                      <div className={styles.performerTags}>
-                        {work.notablePerformers.map((performer) => (
-                          <Link
-                            key={performer._id}
-                            href={`/biographies/${performer.slug}`}
-                            className={styles.performerTag}
-                          >
-                            {performer.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
+        <div className={styles.twoColumnLayout}>
+          {/* Left Column - Chopin Details */}
+          <div className={styles.leftColumn}>
+            <div className={styles.chopinCard}>
+              {chopinProfile?.profileImageUrl && (
+                <div className={styles.profileImageContainer}>
+                  <Image
+                    src={chopinProfile.profileImageUrl}
+                    alt={chopinProfile.profileImageAlt || "Portrait of Frédéric Chopin"}
+                    width={200}
+                    height={200}
+                    className={styles.profileImage}
+                  />
+                </div>
+              )}
+              
+              <div className={styles.chopinInfo}>
+                <h2 className={styles.chopinName}>Frédéric Chopin</h2>
+                <div className={styles.chopinDates}>
+                  {chopinProfile?.birthDate && chopinProfile?.deathDate && (
+                    <span className={styles.dates}>
+                      {new Date(chopinProfile.birthDate).getFullYear()} - {new Date(chopinProfile.deathDate).getFullYear()}
+                    </span>
                   )}
                 </div>
+                
+                {chopinProfile?.biography && (
+                  <div className={styles.biography}>
+                    <p className={styles.biographyText}>
+                      {chopinProfile.biography[0]?.children?.[0]?.text || 
+                       "Frédéric Chopin was a Polish composer and virtuoso pianist of the Romantic period who wrote primarily for solo piano."}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Work Categories */}
+          <div className={styles.rightColumn}>
+            <h2 className={styles.categoriesTitle}>Musical Categories</h2>
+            <div className={styles.categoriesGrid}>
+              {categoryStats.map((category) => (
+                <Link 
+                  key={category.category} 
+                  href={`/works?category=${category.category}`} 
+                  className={styles.categoryCard}
+                >
+                  <div className={styles.categoryContent}>
+                    <h3 className={styles.categoryName}>{category.displayName}</h3>
+                    <span className={styles.categoryCount}>{category.count} works</span>
+                  </div>
+                </Link>
               ))}
             </div>
-          )}
-        </section>
+          </div>
+        </div>
 
-        {/* Podcast Episodes Section */}
+        {/* Latest Podcast Episodes Section */}
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Latest Podcast Episodes</h2>
           

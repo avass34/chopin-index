@@ -1,0 +1,23 @@
+{
+  "_type": "imageGallery",
+  "title": "Chopin's Piano at the Chopin Museum in Warsaw",
+  "image": {
+    "_type": "image",
+    "asset": {
+      "_type": "reference",
+      "_ref": "image-chopin-piano-museum"
+    },
+    "hotspot": {
+      "x": 0.5,
+      "y": 0.5,
+      "height": 1,
+      "width": 1
+    },
+    "crop": {
+      "top": 0,
+      "bottom": 0,
+      "left": 0,
+      "right": 0
+    }
+  }
+}
