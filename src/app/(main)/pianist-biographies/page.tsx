@@ -33,7 +33,7 @@ export default async function PianistBiographiesPage() {
         <div className={styles.header}>
           <h1 className={styles.title}>Pianist Biographies</h1>
           <p className={styles.subtitle}>
-            Discover the lives and legacies of the world's greatest pianists
+            Discover the lives and legacies of the world&apos;s greatest pianists
           </p>
         </div>
 

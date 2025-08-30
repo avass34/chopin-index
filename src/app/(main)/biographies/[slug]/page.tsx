@@ -26,9 +26,9 @@ interface Work {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 async function getPianist(slug: string): Promise<Pianist | null> {
@@ -73,7 +73,8 @@ function formatYear(dateString: string): string {
 }
 
 export default async function PianistPage({ params }: PageProps) {
-  const pianist = await getPianist(params.slug);
+  const { slug } = await params;
+  const pianist = await getPianist(slug);
 
   if (!pianist) {
     notFound();

@@ -33,9 +33,9 @@ interface Work {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 async function getWork(slug: string): Promise<Work | null> {
@@ -77,7 +77,8 @@ function formatCategory(category: string): string {
 }
 
 export default async function WorkPage({ params }: PageProps) {
-  const work = await getWork(params.slug);
+  const { slug } = await params;
+  const work = await getWork(slug);
 
   if (!work) {
     notFound();

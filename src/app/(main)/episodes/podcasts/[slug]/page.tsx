@@ -15,9 +15,9 @@ interface PodcastSnippet {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 async function getPodcastSnippet(slug: string): Promise<PodcastSnippet | null> {
@@ -38,7 +38,8 @@ function formatDuration(duration: string): string {
 }
 
 export default async function PodcastPage({ params }: PageProps) {
-  const podcast = await getPodcastSnippet(params.slug);
+  const { slug } = await params;
+  const podcast = await getPodcastSnippet(slug);
 
   if (!podcast) {
     notFound();

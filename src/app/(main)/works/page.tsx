@@ -68,9 +68,9 @@ export default async function WorksPage() {
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.header}>
-          <h1 className={styles.title}>Chopin's Works</h1>
+          <h1 className={styles.title}>Chopin&apos;s Works</h1>
           <p className={styles.subtitle}>
-            Explore the complete catalog of Chopin's compositions
+            Explore the complete catalog of Chopin&apos;s compositions
           </p>
         </div>
 
@@ -133,7 +133,6 @@ export default async function WorksPage() {
                                 <Link 
                                   href={`/episodes/podcasts/${highlight.podcast.slug}`}
                                   className={styles.podcastTitle}
-                                  onClick={(e) => e.stopPropagation()}
                                 >
                                   {highlight.podcast.title}
                                 </Link>
