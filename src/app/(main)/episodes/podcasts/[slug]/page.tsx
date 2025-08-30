@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { client } from "../../../../../../lib/sanity.client";
-import { getPodcastSnippetBySlugQuery } from "../../../../../../lib/queries";
+import { getPodcastSnippetBySlugQuery, getWorksByPodcastQuery } from "../../../../../../lib/queries";
 import { notFound } from "next/navigation";
+import styles from "./page.module.css";
 
 interface PodcastSnippet {
   _id: string;
@@ -11,7 +13,21 @@ interface PodcastSnippet {
   description: string;
   duration?: string;
   imageUrl?: string;
-  podcastUrl: string;
+  spotifyUrl?: string;
+  youtubeUrl?: string;
+}
+
+interface Work {
+  _id: string;
+  slug: string;
+  pieceTitle: string;
+  category: string;
+  opusNumber?: string;
+  yearOfComposition: number;
+  duration: number;
+  description: string;
+  spotifyTimestamp?: string;
+  youtubeTimestamp?: string;
 }
 
 interface PageProps {
@@ -22,6 +38,10 @@ interface PageProps {
 
 async function getPodcastSnippet(slug: string): Promise<PodcastSnippet | null> {
   return await client.fetch(getPodcastSnippetBySlugQuery, { slug });
+}
+
+async function getWorksByPodcast(podcastId: string): Promise<Work[]> {
+  return await client.fetch(getWorksByPodcastQuery, { podcastId });
 }
 
 function formatDuration(duration: string): string {
@@ -37,6 +57,33 @@ function formatDuration(duration: string): string {
   return duration;
 }
 
+function formatCategory(category: string): string {
+  const categoryMap: { [key: string]: string } = {
+    'nocturne': 'Nocturne',
+    'scherzo': 'Scherzo',
+    'polonaise': 'Polonaise',
+    'concerto': 'Concerto',
+    'prelude': 'Prélude',
+    'etude': 'Étude',
+    'impromptu': 'Impromptu',
+    'ballade': 'Ballade',
+    'mazurka': 'Mazurka',
+    'rondo': 'Rondo',
+    'sonata': 'Sonata',
+    'waltz': 'Waltz',
+    'variations': 'Variations',
+    'other': 'Other',
+    'chamber': 'Chamber',
+  };
+  return categoryMap[category] || category;
+}
+
+function formatDurationFromSeconds(seconds: number): string {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+}
+
 export default async function PodcastPage({ params }: PageProps) {
   const { slug } = await params;
   const podcast = await getPodcastSnippet(slug);
@@ -45,73 +92,115 @@ export default async function PodcastPage({ params }: PageProps) {
     notFound();
   }
 
+  const referencedWorks = await getWorksByPodcast(podcast._id);
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <div className={styles.podcastCard}>
           {/* Header */}
-          <div className="relative h-64 bg-gradient-to-r from-purple-600 to-blue-600">
+          <div className={styles.header}>
+            <div className={styles.headerContent}>
+              <div className={styles.podcastMeta}>
+                <span className={styles.seasonEpisode}>
+                  Season {podcast.seasonNumber}, Episode {podcast.episodeNumber}
+                </span>
+                {podcast.duration && (
+                  <span className={styles.duration}>
+                    Duration: {formatDuration(podcast.duration)}
+                  </span>
+                )}
+              </div>
+              <h1 className={styles.title}>{podcast.title}</h1>
+            </div>
             {podcast.imageUrl && (
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className={styles.imageContainer}>
                 <Image
                   src={podcast.imageUrl}
                   alt={`Podcast artwork for ${podcast.title}`}
                   width={200}
                   height={200}
-                  className="rounded-lg border-4 border-white shadow-lg"
+                  className={styles.podcastImage}
                 />
               </div>
             )}
           </div>
 
-          {/* Content */}
-          <div className="px-6 py-8">
-            <div className="text-center mb-8">
-              <div className="mb-4">
-                <span className="inline-block bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
-                  Season {podcast.seasonNumber}, Episode {podcast.episodeNumber}
-                </span>
-              </div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                {podcast.title}
-              </h1>
-              {podcast.duration && (
-                <p className="text-lg text-gray-600">
-                  Duration: {formatDuration(podcast.duration)}
-                </p>
+          {/* Description */}
+          <div className={styles.description}>
+            <h2 className={styles.sectionTitle}>Description</h2>
+            <p className={styles.descriptionText}>{podcast.description}</p>
+          </div>
+
+          {/* Listen Links */}
+          <div className={styles.listenSection}>
+            <h2 className={styles.sectionTitle}>Listen</h2>
+            <div className={styles.listenButtons}>
+              {podcast.spotifyUrl && (
+                <a
+                  href={podcast.spotifyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.listenButton}
+                >
+                  <span className={styles.buttonIcon}>🎵</span>
+                  Listen on Spotify
+                </a>
+              )}
+              {podcast.youtubeUrl && (
+                <a
+                  href={podcast.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.listenButton}
+                >
+                  <span className={styles.buttonIcon}>📺</span>
+                  Watch on YouTube
+                </a>
               )}
             </div>
+          </div>
 
-            {/* Description */}
-            <div className="prose prose-lg max-w-none mb-8">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Description</h2>
-              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                {podcast.description}
+          {/* Referenced Works */}
+          <div className={styles.worksSection}>
+            <h2 className={styles.sectionTitle}>
+              Featured Works ({referencedWorks.length})
+            </h2>
+            {referencedWorks.length === 0 ? (
+              <p className={styles.noWorksText}>
+                No works are currently associated with this podcast episode.
               </p>
-            </div>
-
-            {/* Listen Button */}
-            <div className="text-center">
-              <a
-                href={podcast.podcastUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-lg font-medium"
-              >
-                <svg className="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                </svg>
-                Listen to Episode
-              </a>
-            </div>
-
-            {/* Additional sections can be added here */}
-            <div className="mt-12 pt-8 border-t border-gray-200">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Episode Notes</h2>
-              <p className="text-gray-600">
-                Additional episode notes and timestamps will be displayed here.
-              </p>
-            </div>
+            ) : (
+              <div className={styles.worksGrid}>
+                {referencedWorks.map((work) => (
+                  <Link key={work._id} href={`/works/${work.slug}`} className={styles.workCard}>
+                    <div className={styles.workInfo}>
+                      <h3 className={styles.workTitle}>{work.pieceTitle}</h3>
+                      <div className={styles.workMeta}>
+                        <span className={styles.category}>{formatCategory(work.category)}</span>
+                        {work.opusNumber && <span className={styles.opus}>{work.opusNumber}</span>}
+                        <span className={styles.year}>{work.yearOfComposition}</span>
+                        <span className={styles.duration}>{formatDurationFromSeconds(work.duration)}</span>
+                      </div>
+                      <p className={styles.workDescription}>{work.description}</p>
+                      
+                      <div className={styles.timestamps}>
+                        {work.spotifyTimestamp && (
+                          <span className={styles.timestamp}>
+                            Spotify: {work.spotifyTimestamp}
+                          </span>
+                        )}
+                        {work.youtubeTimestamp && (
+                          <span className={styles.timestamp}>
+                            YouTube: {work.youtubeTimestamp}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

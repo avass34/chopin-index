@@ -85,72 +85,74 @@ export default async function WorksPage() {
           <div className={styles.worksContainer}>
             <div className={styles.worksGrid}>
               {works.map((work) => (
-                <Link key={work._id} href={`/works/${work.slug}`} className={styles.workCard}>
-                  <div className={styles.workInfo}>
-                    <h3 className={styles.workTitle}>{work.pieceTitle}</h3>
-                    <div className={styles.workMeta}>
-                      <span className={styles.category}>{formatCategory(work.category)}</span>
-                      {work.opusNumber && <span className={styles.opus}>{work.opusNumber}</span>}
-                      <span className={styles.year}>{work.yearOfComposition}</span>
-                      <span className={styles.duration}>{formatDuration(work.duration)}</span>
-                    </div>
-                    <p className={styles.workDescription}>{work.description}</p>
-                    
-                    {work.movements && work.movements.length > 0 && (
-                      <div className={styles.movements}>
-                        <strong>Movements:</strong>
-                        <ul>
-                          {work.movements.map((movement, index) => (
-                            <li key={index}>{movement}</li>
-                          ))}
-                        </ul>
+                <div key={work._id} className={styles.workCard}>
+                  <Link href={`/works/${work.slug}`} className={styles.workLink}>
+                    <div className={styles.workInfo}>
+                      <h3 className={styles.workTitle}>{work.pieceTitle}</h3>
+                      <div className={styles.workMeta}>
+                        <span className={styles.category}>{formatCategory(work.category)}</span>
+                        {work.opusNumber && <span className={styles.opus}>{work.opusNumber}</span>}
+                        <span className={styles.year}>{work.yearOfComposition}</span>
+                        <span className={styles.duration}>{formatDuration(work.duration)}</span>
                       </div>
-                    )}
-                    
-                    {work.notablePerformers && work.notablePerformers.length > 0 && (
-                      <div className={styles.performers}>
-                        <strong>Notable Performers:</strong>
-                        <div className={styles.performerTags}>
-                          {work.notablePerformers.map((performer) => (
-                            <Link
-                              key={performer._id}
-                              href={`/biographies/${performer.slug}`}
-                              className={styles.performerTag}
-                            >
-                              {performer.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {work.podcastHighlights && work.podcastHighlights.length > 0 && (
-                      <div className={styles.podcastHighlights}>
-                        <strong>Podcast Highlights:</strong>
-                        <div className={styles.podcastList}>
-                                                      {work.podcastHighlights.map((highlight) => (
-                              <div key={highlight.podcast._id} className={styles.podcastItem}>
-                                <Link 
-                                  href={`/episodes/podcasts/${highlight.podcast.slug}`}
-                                  className={styles.podcastTitle}
-                                >
-                                  {highlight.podcast.title}
-                                </Link>
-                                <div className={styles.podcastTimestamps}>
-                                  {highlight.spotifyTimestamp && (
-                                    <span className={styles.podcastTimestamp}>Spotify: {highlight.spotifyTimestamp}</span>
-                                  )}
-                                  {highlight.youtubeTimestamp && (
-                                    <span className={styles.podcastTimestamp}>YouTube: {highlight.youtubeTimestamp}</span>
-                                  )}
-                                </div>
-                              </div>
+                      <p className={styles.workDescription}>{work.description}</p>
+                      
+                      {work.movements && work.movements.length > 0 && (
+                        <div className={styles.movements}>
+                          <strong>Movements:</strong>
+                          <ul>
+                            {work.movements.map((movement, index) => (
+                              <li key={index}>{movement}</li>
                             ))}
+                          </ul>
                         </div>
+                      )}
+                    </div>
+                  </Link>
+                  
+                  {work.notablePerformers && work.notablePerformers.length > 0 && (
+                    <div className={styles.performers}>
+                      <strong>Notable Performers:</strong>
+                      <div className={styles.performerTags}>
+                        {work.notablePerformers.map((performer) => (
+                          <Link
+                            key={performer._id}
+                            href={`/biographies/${performer.slug}`}
+                            className={styles.performerTag}
+                          >
+                            {performer.name}
+                          </Link>
+                        ))}
                       </div>
-                    )}
-                  </div>
-                </Link>
+                    </div>
+                  )}
+                  
+                  {work.podcastHighlights && work.podcastHighlights.length > 0 && (
+                    <div className={styles.podcastHighlights}>
+                      <strong>Podcast Highlights:</strong>
+                      <div className={styles.podcastList}>
+                        {work.podcastHighlights.map((highlight) => (
+                          <div key={highlight.podcast._id} className={styles.podcastItem}>
+                            <Link 
+                              href={`/episodes/podcasts/${highlight.podcast.slug}`}
+                              className={styles.podcastTitle}
+                            >
+                              {highlight.podcast.title}
+                            </Link>
+                            <div className={styles.podcastTimestamps}>
+                              {highlight.spotifyTimestamp && (
+                                <span className={styles.podcastTimestamp}>Spotify: {highlight.spotifyTimestamp}</span>
+                              )}
+                              {highlight.youtubeTimestamp && (
+                                <span className={styles.podcastTimestamp}>YouTube: {highlight.youtubeTimestamp}</span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </div>

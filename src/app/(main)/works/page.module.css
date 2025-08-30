@@ -205,13 +205,16 @@
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   border-radius: 12px;
   padding: 2rem;
-  text-decoration: none;
-  color: inherit;
   border: 1px solid rgba(226, 232, 240, 0.8);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: block;
   position: relative;
   overflow: hidden;
+}
+
+.workLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 .workCard::before {
@@ -234,6 +237,11 @@
 
 .workCard:hover::before {
   transform: scaleX(1);
+}
+
+.workLink:hover {
+  text-decoration: none;
+  color: inherit;
 }
 
 .performerTags {

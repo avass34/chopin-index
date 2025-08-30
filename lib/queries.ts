@@ -128,6 +128,21 @@ export const getWorksByPianistQuery = groq`
   }
 `
 
+export const getWorksByPodcastQuery = groq`
+  *[_type == "work" && references($podcastId)] {
+    _id,
+    "slug": slug.current,
+    pieceTitle,
+    category,
+    opusNumber,
+    yearOfComposition,
+    duration,
+    description,
+    "spotifyTimestamp": podcastHighlights[references($podcastId)][0].spotifyTimestamp,
+    "youtubeTimestamp": podcastHighlights[references($podcastId)][0].youtubeTimestamp
+  }
+`
+
 export const getChopinProfileQuery = groq`
   *[_type == "chopinProfile"][0] {
     _id,
