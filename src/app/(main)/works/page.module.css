@@ -1,0 +1,301 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 0;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+  color: white;
+}
+
+.title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 1.375rem;
+  opacity: 0.95;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.emptyState {
+  text-align: center;
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.emptyState p {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+.primary {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+}
+
+.primary:hover {
+  transform: translateY(-2px);
+}
+
+.worksContainer {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.worksGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+
+
+.workInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.workTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.workMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.category {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.opus {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.year {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.duration {
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.workDescription {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.movements {
+  font-size: 0.875rem;
+}
+
+.movements strong {
+  color: #374151;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.movements ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #6b7280;
+}
+
+.movements li {
+  margin-bottom: 0.25rem;
+}
+
+.performers {
+  font-size: 0.875rem;
+}
+
+.performers strong {
+  color: #374151;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.performerTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.performerTag {
+  background: #f3e8ff;
+  color: #7c3aed;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.performerTag:hover {
+  background: #e9d5ff;
+}
+
+.workCard {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 12px;
+  padding: 2rem;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+.workCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.workCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border-color: #cbd5e1;
+}
+
+.workCard:hover::before {
+  transform: scaleX(1);
+}
+
+.performerTags {
+  position: relative;
+  z-index: 5;
+}
+
+.podcastHighlights {
+  font-size: 0.875rem;
+}
+
+.podcastHighlights strong {
+  color: #374151;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.podcastList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.podcastItem {
+  background: #f0f9ff;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border-left: 3px solid #0ea5e9;
+}
+
+.podcastTitle {
+  display: block;
+  font-weight: 500;
+  color: #0c4a6e;
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.podcastTitle:hover {
+  color: #0369a1;
+  text-decoration: underline;
+}
+
+.podcastTimestamp {
+  display: block;
+  color: #0369a1;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .worksGrid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  .workCard {
+    padding: 1rem;
+  }
+}

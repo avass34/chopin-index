@@ -1,23 +1,5 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
-import "./globals.css";
-import styles from "./layout.module.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Chopin Index",
-  description: "Explore Chopin's works, pianist biographies, and podcast episodes",
-};
+import styles from "../layout.module.css";
 
 function Navbar() {
   return (
@@ -86,16 +68,18 @@ function Footer() {
   );
 }
 
-export default function RootLayout({
+export default function MainLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <div className={styles.layout}>
+      <Navbar />
+      <main className={styles.main}>
         {children}
-      </body>
-    </html>
+      </main>
+      <Footer />
+    </div>
   );
 }

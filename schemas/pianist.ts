@@ -12,6 +12,17 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'name',
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+      description: 'URL-friendly identifier for the pianist (e.g., arthur-rubinstein)',
+    }),
+    defineField({
       name: 'dateBorn',
       title: 'Date Born',
       type: 'date',

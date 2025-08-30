@@ -13,6 +13,88 @@ export default defineType({
       description: 'Title of the musical piece',
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'pieceTitle',
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+      description: 'URL-friendly identifier for the work (e.g., chopin-nocturne-opus-9-eb-minor)',
+    }),
+    defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+      options: {
+        list: [
+          { title: 'Nocturne', value: 'nocturne' },
+          { title: 'Scherzo', value: 'scherzo' },
+          { title: 'Polonaise', value: 'polonaise' },
+          { title: 'Concerto', value: 'concerto' },
+          { title: 'Prélude', value: 'prelude' },
+          { title: 'Étude', value: 'etude' },
+          { title: 'Impromptu', value: 'impromptu' },
+          { title: 'Ballade', value: 'ballade' },
+          { title: 'Mazurka', value: 'mazurka' },
+          { title: 'Rondo', value: 'rondo' },
+          { title: 'Sonata', value: 'sonata' },
+          { title: 'Waltz', value: 'waltz' },
+          { title: 'Variations', value: 'variations' },
+          { title: 'Other', value: 'other' },
+          { title: 'Chamber', value: 'chamber' },
+        ],
+      },
+      description: 'Musical category/genre of the piece',
+    }),
+    defineField({
+      name: 'key',
+      title: 'Key',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+      options: {
+        list: [
+          { title: 'C Major', value: 'C' },
+          { title: 'C Minor', value: 'Cm' },
+          { title: 'C♯ Major', value: 'C#' },
+          { title: 'C♯ Minor', value: 'C#m' },
+          { title: 'D Major', value: 'D' },
+          { title: 'D Minor', value: 'Dm' },
+          { title: 'D♯ Major', value: 'D#' },
+          { title: 'D♯ Minor', value: 'D#m' },
+          { title: 'E Major', value: 'E' },
+          { title: 'E Minor', value: 'Em' },
+          { title: 'F Major', value: 'F' },
+          { title: 'F Minor', value: 'Fm' },
+          { title: 'F♯ Major', value: 'F#' },
+          { title: 'F♯ Minor', value: 'F#m' },
+          { title: 'G Major', value: 'G' },
+          { title: 'G Minor', value: 'Gm' },
+          { title: 'G♯ Major', value: 'G#' },
+          { title: 'G♯ Minor', value: 'G#m' },
+          { title: 'A Major', value: 'A' },
+          { title: 'A Minor', value: 'Am' },
+          { title: 'A♯ Major', value: 'A#' },
+          { title: 'A♯ Minor', value: 'A#m' },
+          { title: 'B Major', value: 'B' },
+          { title: 'B Minor', value: 'Bm' },
+          { title: 'B♭ Major', value: 'Bb' },
+          { title: 'B♭ Minor', value: 'Bbm' },
+          { title: 'E♭ Major', value: 'Eb' },
+          { title: 'E♭ Minor', value: 'Ebm' },
+          { title: 'A♭ Major', value: 'Ab' },
+          { title: 'A♭ Minor', value: 'Abm' },
+          { title: 'D♭ Major', value: 'Db' },
+          { title: 'D♭ Minor', value: 'Dbm' },
+          { title: 'G♭ Major', value: 'Gb' },
+          { title: 'G♭ Minor', value: 'Gbm' },
+        ],
+      },
+      description: 'Musical key of the piece',
+    }),
+    defineField({
       name: 'opusNumber',
       title: 'Opus Number',
       type: 'string',
@@ -47,6 +129,30 @@ export default defineType({
       description: 'List of movements in the piece (leave empty for single-movement works)',
     }),
     defineField({
+      name: 'imslpImage',
+      title: 'IMSLP Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'string',
+          description: 'Alternative text for accessibility',
+          validation: (Rule) => Rule.required(),
+        },
+      ],
+      description: 'Image from the International Music Score Library Project',
+    }),
+    defineField({
+      name: 'imslpLink',
+      title: 'IMSLP Link',
+      type: 'url',
+      description: 'Link to the piece on the International Music Score Library Project',
+    }),
+    defineField({
       name: 'notablePerformers',
       title: 'Notable Performers',
       type: 'array',
@@ -57,40 +163,64 @@ export default defineType({
       name: 'podcastHighlights',
       title: 'Podcast Highlights',
       type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'podcastSnippet' }] }],
-      description: 'Select podcast snippets that discuss this piece',
-    }),
-    defineField({
-      name: 'image',
-      title: 'Piece Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-      description: 'Image related to the piece (score, manuscript, etc.)',
-    }),
-    defineField({
-      name: 'tags',
-      title: 'Tags',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Tags to categorize the piece',
+      of: [{
+        type: 'object',
+        fields: [
+          {
+            name: 'podcast',
+            title: 'Podcast Snippet',
+            type: 'reference',
+            to: [{ type: 'podcastSnippet' }],
+            validation: (Rule) => Rule.required(),
+          },
+          {
+            name: 'spotifyTimestamp',
+            title: 'Spotify Timestamp',
+            type: 'string',
+            description: 'Timestamp in format HH:MM:SS where this piece is discussed on Spotify',
+          },
+          {
+            name: 'youtubeTimestamp',
+            title: 'YouTube Timestamp',
+            type: 'string',
+            description: 'Timestamp in format HH:MM:SS where this piece is discussed on YouTube',
+          },
+        ],
+        preview: {
+          select: {
+            title: 'podcast.title',
+            spotifyTimestamp: 'spotifyTimestamp',
+            youtubeTimestamp: 'youtubeTimestamp',
+          },
+          prepare(selection) {
+            const { title, spotifyTimestamp, youtubeTimestamp } = selection
+            const timestamps = [spotifyTimestamp, youtubeTimestamp].filter(Boolean)
+            const subtitle = timestamps.length > 0 ? timestamps.join(' / ') : 'No timestamps'
+            return {
+              title: title || 'Untitled Podcast',
+              subtitle: subtitle,
+            }
+          },
+        },
+      }],
+      description: 'Select podcast snippets that discuss this piece with timestamps',
     }),
   ],
   preview: {
     select: {
       title: 'pieceTitle',
+      category: 'category',
+      key: 'key',
       opus: 'opusNumber',
       year: 'yearOfComposition',
-      media: 'image',
     },
     prepare(selection) {
-      const { title, opus, year } = selection
-      const subtitle = [opus, year].filter(Boolean).join(' • ')
+      const { title, category, key, opus, year } = selection
+      const categoryTitle = category ? category.charAt(0).toUpperCase() + category.slice(1) : ''
+      const subtitle = [categoryTitle, key, opus, year].filter(Boolean).join(' • ')
       return {
         title: title,
         subtitle: subtitle,
-        media: selection.media,
       }
     },
   },

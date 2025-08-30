@@ -13,18 +13,59 @@ export default defineType({
       description: 'Title of the podcast episode or segment',
     }),
     defineField({
-      name: 'timestamp',
-      title: 'Timestamp',
-      type: 'string',
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
       validation: (Rule) => Rule.required(),
-      description: 'Timestamp in format HH:MM:SS',
+      description: 'URL-friendly identifier for the episode (e.g., season-1-episode-3-chopins-early-years)',
     }),
     defineField({
-      name: 'podcastUrl',
-      title: 'Podcast URL',
+      name: 'seasonNumber',
+      title: 'Season Number',
+      type: 'number',
+      validation: (Rule) => Rule.required().min(1),
+      description: 'Season number of the podcast',
+    }),
+    defineField({
+      name: 'episodeNumber',
+      title: 'Episode Number',
+      type: 'number',
+      validation: (Rule) => Rule.required().min(1),
+      description: 'Episode number within the season',
+    }),
+    defineField({
+      name: 'image',
+      title: 'Podcast Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'string',
+          description: 'Alternative text for accessibility',
+          validation: (Rule) => Rule.required(),
+        },
+      ],
+      description: 'Podcast artwork or related image',
+    }),
+    defineField({
+      name: 'spotifyUrl',
+      title: 'Spotify URL',
       type: 'url',
-      validation: (Rule) => Rule.required(),
-      description: 'URL to the podcast episode or segment',
+      description: 'URL to the podcast episode on Spotify',
+    }),
+    defineField({
+      name: 'youtubeUrl',
+      title: 'YouTube URL',
+      type: 'url',
+      description: 'URL to the podcast episode on YouTube',
     }),
     defineField({
       name: 'description',
@@ -39,25 +80,22 @@ export default defineType({
       type: 'string',
       description: 'Duration of the podcast segment in format HH:MM:SS',
     }),
-    defineField({
-      name: 'tags',
-      title: 'Tags',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Tags to categorize the podcast content',
-    }),
   ],
   preview: {
     select: {
       title: 'title',
-      timestamp: 'timestamp',
+      seasonNumber: 'seasonNumber',
+      episodeNumber: 'episodeNumber',
       description: 'description',
+      media: 'image',
     },
     prepare(selection) {
-      const { title, timestamp, description } = selection
+      const { title, seasonNumber, episodeNumber, description } = selection
+      const episodeInfo = `S${seasonNumber}E${episodeNumber}`
       return {
-        title: title,
-        subtitle: `${timestamp} - ${description?.substring(0, 50)}${description && description.length > 50 ? '...' : ''}`,
+        title: `${episodeInfo} - ${title}`,
+        subtitle: description?.substring(0, 50) + (description && description.length > 50 ? '...' : ''),
+        media: selection.media,
       }
     },
   },
