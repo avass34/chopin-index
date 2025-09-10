@@ -29,8 +29,8 @@ export const getAllWorksQuery = groq`
     _id,
     "slug": slug.current,
     pieceTitle,
-    category,
-    opusNumber,
+    nickname,
+    isPopular,
     yearOfComposition,
     duration,
     description,
@@ -47,7 +47,8 @@ export const getAllWorksQuery = groq`
         _id,
         "slug": slug.current,
         title,
-        description
+        description,
+        pageLink
       }
     }
   }
@@ -57,8 +58,8 @@ export const getWorkBySlugQuery = groq`
   *[_type == "work" && slug.current == $slug][0] {
     _id,
     pieceTitle,
-    category,
-    opusNumber,
+    nickname,
+    isPopular,
     yearOfComposition,
     duration,
     description,
@@ -80,7 +81,22 @@ export const getWorkBySlugQuery = groq`
         description,
         seasonNumber,
         episodeNumber,
-        "imageUrl": image.asset->url
+        "imageUrl": image.asset->url,
+        pageLink
+      }
+    },
+    "opus": *[_type == "opus" && references(^._id)][0]{
+      _id,
+      title,
+      "slug": slug.current,
+      date,
+      "category": category->{
+        _id,
+        name,
+        pluralName,
+        "slug": slug.current,
+        "imageUrl": image.asset->url,
+        imageDescription
       }
     }
   }
@@ -97,7 +113,9 @@ export const getAllPodcastSnippetsQuery = groq`
     duration,
     "imageUrl": image.asset->url,
     spotifyUrl,
-    youtubeUrl
+    youtubeUrl,
+    applePodcastUrl,
+    pageLink
   }
 `
 
@@ -111,7 +129,9 @@ export const getPodcastSnippetBySlugQuery = groq`
     duration,
     "imageUrl": image.asset->url,
     spotifyUrl,
-    youtubeUrl
+    youtubeUrl,
+    applePodcastUrl,
+    pageLink
   }
 `
 
@@ -120,11 +140,25 @@ export const getWorksByPianistQuery = groq`
     _id,
     "slug": slug.current,
     pieceTitle,
-    category,
-    opusNumber,
+    nickname,
+    isPopular,
     yearOfComposition,
     duration,
-    description
+    description,
+    "opus": *[_type == "opus" && references(^._id)][0]{
+      _id,
+      title,
+      "slug": slug.current,
+      date,
+      "category": category->{
+        _id,
+        name,
+        pluralName,
+        "slug": slug.current,
+        "imageUrl": image.asset->url,
+        imageDescription
+      }
+    }
   }
 `
 
@@ -133,8 +167,8 @@ export const getWorksByPodcastQuery = groq`
     _id,
     "slug": slug.current,
     pieceTitle,
-    category,
-    opusNumber,
+    nickname,
+    isPopular,
     yearOfComposition,
     duration,
     description,
@@ -143,14 +177,42 @@ export const getWorksByPodcastQuery = groq`
   }
 `
 
+export const getPopularWorksQuery = groq`
+  *[_type == "work" && isPopular == true] | order(yearOfComposition desc) {
+    _id,
+    "slug": slug.current,
+    pieceTitle,
+    nickname,
+    isPopular,
+    yearOfComposition,
+    duration,
+    description,
+    movements
+  }
+`
+
 export const getChopinProfileQuery = groq`
   *[_type == "chopinProfile"][0] {
     _id,
     "profileImageUrl": profileImage.asset->url,
     "profileImageAlt": profileImage.alt,
+    "backgroundImageUrl": backgroundImage.asset->url,
+    "backgroundImageAlt": backgroundImage.alt,
     birthDate,
     deathDate,
-    biography
+    biography,
+    extendedBiography
+  }
+`
+
+export const getAllCategoriesQuery = groq`
+  *[_type == "category"] | order(name asc) {
+    _id,
+    name,
+    pluralName,
+    "slug": slug.current,
+    "imageUrl": image.asset->url,
+    imageDescription
   }
 `
 
@@ -159,5 +221,53 @@ export const getAllImageGalleryQuery = groq`
     _id,
     title,
     "imageUrl": image.asset->url
+  }
+`
+
+export const getAllOpusesQuery = groq`
+  *[_type == "opus"] | order(date asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    date,
+    "category": opus->category->{
+      _id,
+      name,
+      pluralName,
+      "slug": slug.current,
+      "imageUrl": image.asset->url,
+      imageDescription
+    },
+    "works": works[]->{
+      _id,
+      pieceTitle,
+      "slug": slug.current
+    }
+  }
+`
+
+export const getOpusBySlugQuery = groq`
+  *[_type == "opus" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    date,
+    "category": opus->category->{
+      _id,
+      name,
+      pluralName,
+      "slug": slug.current,
+      "imageUrl": image.asset->url,
+      imageDescription
+    },
+    "works": works[]->{
+      _id,
+      pieceTitle,
+      "slug": slug.current,
+      yearOfComposition,
+      duration,
+      description,
+      movements
+    }
   }
 `

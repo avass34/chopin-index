@@ -1,0 +1,63 @@
+.workCard {
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.workCard:hover {
+  transform: translateY(-1px);
+}
+
+.workLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.workInfo {
+  margin-bottom: 0.5rem;
+}
+
+.workTitle {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--white);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+}
+
+.workMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-family: var(--font-details);
+  font-size: 0.875rem;
+}
+
+.opus {
+  color: var(--white);
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+
+
+/* Variants */
+.compact .workTitle {
+  font-size: 1rem;
+}
+
+.detailed .workTitle {
+  font-size: 1.25rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .workTitle {
+    font-size: 1rem;
+  }
+  
+  .workMeta {
+    gap: 0.25rem;
+  }
+}

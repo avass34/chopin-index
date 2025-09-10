@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Metadata } from "next";
 import { client } from "../../../../../lib/sanity.client";
-import { getPianistBySlugQuery, getWorksByPianistQuery } from "../../../../../lib/queries";
+import { getPianistBySlugQuery, getWorksByPianistQuery, getAllPianistsQuery } from "../../../../../lib/queries";
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 
 interface Pianist {
   _id: string;
+  slug: string;
   name: string;
   dateBorn: string;
   dateDead?: string;
@@ -18,11 +20,25 @@ interface Work {
   _id: string;
   slug: string;
   pieceTitle: string;
-  category: string;
-  opusNumber?: string;
+  nickname?: string;
+  isPopular: boolean;
   yearOfComposition: number;
   duration: number;
   description: string;
+  opus?: {
+    _id: string;
+    title: string;
+    slug: string;
+    date: string;
+    category: {
+      _id: string;
+      name: string;
+      pluralName: string;
+      slug: string;
+      imageUrl?: string;
+      imageDescription?: string;
+    };
+  };
 }
 
 interface PageProps {
@@ -39,38 +55,58 @@ async function getWorksByPianist(pianistId: string): Promise<Work[]> {
   return await client.fetch(getWorksByPianistQuery, { pianistId });
 }
 
+async function getAllPianists(): Promise<Pianist[]> {
+  return await client.fetch(getAllPianistsQuery);
+}
+
+// Generate static params for all pianists
+export async function generateStaticParams() {
+  const pianists = await getAllPianists();
+  
+  return pianists.map((pianist) => ({
+    slug: pianist.slug,
+  }));
+}
+
+// Generate metadata for each pianist page
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const pianist = await getPianist(slug);
+  
+  if (!pianist) {
+    return {
+      title: 'Pianist Not Found | Chopin Index',
+      description: 'The requested pianist could not be found.',
+    };
+  }
+  
+  return {
+    title: `${pianist.name} | Chopin Index`,
+    description: `Biography of ${pianist.name}, a notable pianist who performed Chopin's works. ${pianist.biography.substring(0, 160)}...`,
+    openGraph: {
+      title: `${pianist.name} | Chopin Index`,
+      description: pianist.biography.substring(0, 160),
+      type: 'article',
+    },
+  };
+}
+
 function formatDuration(seconds: number): string {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
   return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
-function formatCategory(category: string): string {
-  const categoryMap: { [key: string]: string } = {
-    'ballade': 'Ballade',
-    'etude': 'Étude',
-    'mazurka': 'Mazurka',
-    'nocturne': 'Nocturne',
-    'polonaise': 'Polonaise',
-    'prelude': 'Prelude',
-    'scherzo': 'Scherzo',
-    'sonata': 'Sonata',
-    'waltz': 'Waltz',
-    'concerto': 'Concerto',
-    'impromptu': 'Impromptu',
-    'fantasy': 'Fantasy',
-    'rondo': 'Rondo',
-    'variations': 'Variations',
-    'other': 'Other'
-  };
-  return categoryMap[category] || category;
-}
+
 
 function formatYear(dateString: string): string {
   if (!dateString) return '';
   const date = new Date(dateString);
   return date.getFullYear().toString();
 }
+
+// Revalidate every 24 hours (content rarely changes)
+export const revalidate = 86400;
 
 export default async function PianistPage({ params }: PageProps) {
   const { slug } = await params;
@@ -131,8 +167,8 @@ export default async function PianistPage({ params }: PageProps) {
                       <div className={styles.workInfo}>
                         <h3 className={styles.workTitle}>{work.pieceTitle}</h3>
                         <div className={styles.workMeta}>
-                          <span className={styles.category}>{formatCategory(work.category)}</span>
-                          {work.opusNumber && <span className={styles.opus}>{work.opusNumber}</span>}
+                          {work.opus?.category && <span className={styles.category}>{work.opus.category.name}</span>}
+                          {work.opus?.title && <span className={styles.opus}>{work.opus.title}</span>}
                           <span className={styles.year}>{work.yearOfComposition}</span>
                           <span className={styles.duration}>{formatDuration(work.duration)}</span>
                         </div>

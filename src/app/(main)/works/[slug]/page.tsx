@@ -1,15 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Metadata } from "next";
 import { client } from "../../../../../lib/sanity.client";
-import { getWorkBySlugQuery } from "../../../../../lib/queries";
+import { getWorkBySlugQuery, getAllWorksQuery } from "../../../../../lib/queries";
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
 
 interface Work {
   _id: string;
+  slug: string;
   pieceTitle: string;
-  category: string;
-  opusNumber?: string;
+  nickname?: string;
+  isPopular: boolean;
   yearOfComposition: number;
   duration: string;
   description: string;
@@ -28,8 +30,23 @@ interface Work {
       seasonNumber: number;
       episodeNumber: number;
       imageUrl?: string;
+      pageLink?: string;
     } 
   }[];
+  opus?: {
+    _id: string;
+    title: string;
+    slug: string;
+    date: string;
+    category: {
+      _id: string;
+      name: string;
+      pluralName: string;
+      slug: string;
+      imageUrl?: string;
+      imageDescription?: string;
+    };
+  };
 }
 
 interface PageProps {
@@ -40,6 +57,42 @@ interface PageProps {
 
 async function getWork(slug: string): Promise<Work | null> {
   return await client.fetch(getWorkBySlugQuery, { slug });
+}
+
+async function getAllWorks(): Promise<Work[]> {
+  return await client.fetch(getAllWorksQuery);
+}
+
+// Generate static params for all works
+export async function generateStaticParams() {
+  const works = await getAllWorks();
+  
+  return works.map((work) => ({
+    slug: work.slug,
+  }));
+}
+
+// Generate metadata for each work page
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const work = await getWork(slug);
+  
+  if (!work) {
+    return {
+      title: 'Work Not Found | Chopin Index',
+      description: 'The requested work could not be found.',
+    };
+  }
+  
+  return {
+    title: `${work.pieceTitle} | Chopin Index`,
+    description: `${work.pieceTitle} by Frédéric Chopin. ${work.description.substring(0, 160)}...`,
+    openGraph: {
+      title: `${work.pieceTitle} | Chopin Index`,
+      description: work.description.substring(0, 160),
+      type: 'article',
+    },
+  };
 }
 
 function formatDuration(duration: string): string {
@@ -55,26 +108,10 @@ function formatDuration(duration: string): string {
   return duration;
 }
 
-function formatCategory(category: string): string {
-  const categoryMap: { [key: string]: string } = {
-    'nocturne': 'Nocturne',
-    'scherzo': 'Scherzo',
-    'polonaise': 'Polonaise',
-    'concerto': 'Concerto',
-    'prelude': 'Prélude',
-    'etude': 'Étude',
-    'impromptu': 'Impromptu',
-    'ballade': 'Ballade',
-    'mazurka': 'Mazurka',
-    'rondo': 'Rondo',
-    'sonata': 'Sonata',
-    'waltz': 'Waltz',
-    'variations': 'Variations',
-    'other': 'Other',
-    'chamber': 'Chamber',
-  };
-  return categoryMap[category] || category;
-}
+
+
+// Revalidate every 24 hours (content rarely changes)
+export const revalidate = 86400;
 
 export default async function WorkPage({ params }: PageProps) {
   const { slug } = await params;
@@ -95,17 +132,19 @@ export default async function WorkPage({ params }: PageProps) {
                 {work.pieceTitle}
               </h1>
               <div className={styles.metaTags}>
-                <span className={styles.metaTag}>
-                  {formatCategory(work.category)}
-                </span>
+                {work.opus?.category && (
+                  <span className={styles.metaTag}>
+                    {work.opus.category.name}
+                  </span>
+                )}
                 {work.key && (
                   <span className={styles.metaTag}>
                     {work.key}
                   </span>
                 )}
-                {work.opusNumber && (
+                {work.opus?.title && (
                   <span className={styles.metaTag}>
-                    {work.opusNumber}
+                    {work.opus.title}
                   </span>
                 )}
                 <span className={styles.metaTag}>
@@ -179,7 +218,12 @@ export default async function WorkPage({ params }: PageProps) {
                 <h2 className={styles.sectionTitle}>Podcast Highlights</h2>
                 <div className={styles.podcastHighlights}>
                   {work.podcastHighlights.map((highlight) => (
-                    <div key={highlight.podcast._id} className={styles.podcastCard}>
+                    <Link
+                      key={highlight.podcast._id}
+                      href={highlight.podcast.pageLink || `/episodes/podcasts/${highlight.podcast._id}`}
+                      className={styles.podcastCard}
+                      target={highlight.podcast.pageLink ? "_blank" : "_self"}
+                    >
                       <div className={styles.podcastHeader}>
                         {highlight.podcast.imageUrl && (
                           <Image
@@ -209,7 +253,7 @@ export default async function WorkPage({ params }: PageProps) {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>

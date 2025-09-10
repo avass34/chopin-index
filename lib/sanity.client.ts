@@ -14,9 +14,29 @@ export async function getChopinProfile() {
       _id,
       "profileImageUrl": profileImage.asset->url,
       "profileImageAlt": profileImage.alt,
+      "backgroundImageUrl": backgroundImage.asset->url,
+      "backgroundImageAlt": backgroundImage.alt,
       birthDate,
       deathDate,
-      biography
+      biography,
+      extendedBiography
+    }
+  `)
+}
+
+// Helper function to get Popular Works
+export async function getPopularWorks() {
+  return client.fetch(`
+    *[_type == "work" && isPopular == true] | order(yearOfComposition desc) {
+      _id,
+      "slug": slug.current,
+      pieceTitle,
+      nickname,
+      isPopular,
+      yearOfComposition,
+      duration,
+      description,
+      movements
     }
   `)
 }

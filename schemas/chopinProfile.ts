@@ -25,6 +25,24 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'backgroundImage',
+      title: 'Background Image',
+      type: 'image',
+      description: 'Background image for the home page',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative text',
+          description: 'Important for SEO and accessibility.',
+          validation: (Rule) => Rule.required(),
+        },
+      ],
+    }),
+    defineField({
       name: 'birthDate',
       title: 'Birth Date',
       type: 'date',
@@ -79,8 +97,51 @@ export default defineType({
           },
         },
       ],
-      description: 'Rich text biography of Chopin',
+      description: 'Brief biography of Chopin for the home page',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'extendedBiography',
+      title: 'Extended Biography',
+      type: 'array',
+      of: [
+        {
+          type: 'block',
+          styles: [
+            { title: 'Normal', value: 'normal' },
+            { title: 'H2', value: 'h2' },
+            { title: 'H3', value: 'h3' },
+            { title: 'Quote', value: 'blockquote' },
+          ],
+          marks: {
+            decorators: [
+              { title: 'Strong', value: 'strong' },
+              { title: 'Emphasis', value: 'em' },
+            ],
+            annotations: [
+              {
+                title: 'URL',
+                name: 'link',
+                type: 'object',
+                fields: [
+                  {
+                    title: 'URL',
+                    name: 'href',
+                    type: 'url',
+                  },
+                ],
+              },
+            ],
+          },
+        },
+        {
+          type: 'image',
+          options: {
+            hotspot: true,
+          },
+        },
+      ],
+      description: 'Extended biography of Chopin for detailed pages',
     }),
   ],
   preview: {

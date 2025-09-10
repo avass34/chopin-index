@@ -6,21 +6,18 @@ function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.navbarContent}>
         <Link href="/" className={styles.navbarBrand}>
-          <span className={styles.brandText}>Chopin Index</span>
+          <span className={styles.brandText}>Chopin <span>Index</span></span>
         </Link>
         
         <div className={styles.navbarLinks}>
-          <Link href="/" className={styles.navLink}>
-            Home
+          <Link href="/chopin-biography" className={styles.navLink}>
+            Chopin
           </Link>
           <Link href="/works" className={styles.navLink}>
             Works
           </Link>
-          <Link href="/pianist-biographies" className={styles.navLink}>
-            Pianists
-          </Link>
-          <Link href="/episodes" className={styles.navLink}>
-            Episodes
+          <Link href="https://www.chopinpodcast.com/" className={styles.navLink} target="_blank" rel="noopener noreferrer">
+            Podcast
           </Link>
         </div>
       </div>
@@ -50,9 +47,6 @@ function Footer() {
             </Link>
             <Link href="/pianist-biographies" className={styles.footerLink}>
               Pianist Biographies
-            </Link>
-            <Link href="/episodes" className={styles.footerLink}>
-              Podcast Episodes
             </Link>
           </nav>
         </div>

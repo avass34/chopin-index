@@ -127,26 +127,10 @@
   overflow: hidden;
 }
 
-.workCard::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
-}
-
 .workCard:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
   border-color: #cbd5e1;
-}
-
-.workCard:hover::before {
-  transform: scaleX(1);
 }
 
 .workInfo {

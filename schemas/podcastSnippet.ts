@@ -68,6 +68,12 @@ export default defineType({
       description: 'URL to the podcast episode on YouTube',
     }),
     defineField({
+      name: 'applePodcastUrl',
+      title: 'Apple Podcast URL',
+      type: 'url',
+      description: 'URL to the podcast episode on Apple Podcasts',
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
@@ -79,6 +85,12 @@ export default defineType({
       title: 'Duration',
       type: 'string',
       description: 'Duration of the podcast segment in format HH:MM:SS',
+    }),
+    defineField({
+      name: 'pageLink',
+      title: 'Page Link',
+      type: 'url',
+      description: 'URL to the podcast episode page or external link',
     }),
   ],
   preview: {

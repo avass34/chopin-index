@@ -13,6 +13,12 @@ export default defineType({
       description: 'Title of the musical piece',
     }),
     defineField({
+      name: 'nickname',
+      title: 'Nickname',
+      type: 'string',
+      description: 'Common nickname or alternative title for the piece (e.g., "Raindrop" for Prelude Op. 28, No. 15)',
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
@@ -24,30 +30,11 @@ export default defineType({
       description: 'URL-friendly identifier for the work (e.g., chopin-nocturne-opus-9-eb-minor)',
     }),
     defineField({
-      name: 'category',
-      title: 'Category',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-      options: {
-        list: [
-          { title: 'Nocturne', value: 'nocturne' },
-          { title: 'Scherzo', value: 'scherzo' },
-          { title: 'Polonaise', value: 'polonaise' },
-          { title: 'Concerto', value: 'concerto' },
-          { title: 'Prélude', value: 'prelude' },
-          { title: 'Étude', value: 'etude' },
-          { title: 'Impromptu', value: 'impromptu' },
-          { title: 'Ballade', value: 'ballade' },
-          { title: 'Mazurka', value: 'mazurka' },
-          { title: 'Rondo', value: 'rondo' },
-          { title: 'Sonata', value: 'sonata' },
-          { title: 'Waltz', value: 'waltz' },
-          { title: 'Variations', value: 'variations' },
-          { title: 'Other', value: 'other' },
-          { title: 'Chamber', value: 'chamber' },
-        ],
-      },
-      description: 'Musical category/genre of the piece',
+      name: 'isPopular',
+      title: 'Is Popular',
+      type: 'boolean',
+      initialValue: false,
+      description: 'Toggle to mark this work as popular/frequently performed',
     }),
     defineField({
       name: 'key',
@@ -93,12 +80,6 @@ export default defineType({
         ],
       },
       description: 'Musical key of the piece',
-    }),
-    defineField({
-      name: 'opusNumber',
-      title: 'Opus Number',
-      type: 'string',
-      description: 'Opus number of the piece (e.g., Op. 11)',
     }),
     defineField({
       name: 'yearOfComposition',
@@ -209,17 +190,16 @@ export default defineType({
   preview: {
     select: {
       title: 'pieceTitle',
-      category: 'category',
+      nickname: 'nickname',
       key: 'key',
-      opus: 'opusNumber',
       year: 'yearOfComposition',
     },
     prepare(selection) {
-      const { title, category, key, opus, year } = selection
-      const categoryTitle = category ? category.charAt(0).toUpperCase() + category.slice(1) : ''
-      const subtitle = [categoryTitle, key, opus, year].filter(Boolean).join(' • ')
+      const { title, nickname, key, year } = selection
+      const displayTitle = nickname ? `${title} (${nickname})` : title
+      const subtitle = [key, year].filter(Boolean).join(' • ')
       return {
-        title: title,
+        title: displayTitle,
         subtitle: subtitle,
       }
     },

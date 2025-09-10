@@ -6,6 +6,8 @@ import work from './work'
 import podcastSnippet from './podcastSnippet'
 import chopinProfile from './chopinProfile'
 import imageGallery from './imageGallery'
+import category from './category'
+import opus from './opus'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Add your schema types here
@@ -14,4 +16,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   podcastSnippet,
   chopinProfile,
   imageGallery,
+  category,
+  opus,
 ]

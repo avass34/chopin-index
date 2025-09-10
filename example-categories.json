@@ -1,0 +1,257 @@
+[
+  {
+    "_type": "category",
+    "name": "Nocturne",
+    "pluralName": "Nocturnes",
+    "slug": {
+      "_type": "slug",
+      "current": "nocturnes"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-nocturne-category"
+      },
+      "alt": "Moonlit piano keys representing Chopin's nocturnes"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Polonaise",
+    "pluralName": "Polonaises",
+    "slug": {
+      "_type": "slug",
+      "current": "polonaises"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-polonaise-category"
+      },
+      "alt": "Polish flag and piano representing Chopin's polonaises"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Étude",
+    "pluralName": "Études",
+    "slug": {
+      "_type": "slug",
+      "current": "etudes"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-etude-category"
+      },
+      "alt": "Sheet music and piano keys representing Chopin's études"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Mazurka",
+    "pluralName": "Mazurkas",
+    "slug": {
+      "_type": "slug",
+      "current": "mazurkas"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-mazurka-category"
+      },
+      "alt": "Polish folk dance elements representing Chopin's mazurkas"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Ballade",
+    "pluralName": "Ballades",
+    "slug": {
+      "_type": "slug",
+      "current": "ballades"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-ballade-category"
+      },
+      "alt": "Dramatic musical notation representing Chopin's ballades"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Scherzo",
+    "pluralName": "Scherzos",
+    "slug": {
+      "_type": "slug",
+      "current": "scherzos"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-scherzo-category"
+      },
+      "alt": "Playful musical elements representing Chopin's scherzos"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Prélude",
+    "pluralName": "Préludes",
+    "slug": {
+      "_type": "slug",
+      "current": "preludes"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-prelude-category"
+      },
+      "alt": "Short musical phrases representing Chopin's préludes"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Impromptu",
+    "pluralName": "Impromptus",
+    "slug": {
+      "_type": "slug",
+      "current": "impromptus"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-impromptu-category"
+      },
+      "alt": "Spontaneous musical elements representing Chopin's impromptus"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Sonata",
+    "pluralName": "Sonatas",
+    "slug": {
+      "_type": "slug",
+      "current": "sonatas"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-sonata-category"
+      },
+      "alt": "Classical structure elements representing Chopin's sonatas"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Waltz",
+    "pluralName": "Waltzes",
+    "slug": {
+      "_type": "slug",
+      "current": "waltzes"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-waltz-category"
+      },
+      "alt": "Dancing couple silhouette representing Chopin's waltzes"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Concerto",
+    "pluralName": "Concertos",
+    "slug": {
+      "_type": "slug",
+      "current": "concertos"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-concerto-category"
+      },
+      "alt": "Orchestra and piano representing Chopin's concertos"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Rondo",
+    "pluralName": "Rondos",
+    "slug": {
+      "_type": "slug",
+      "current": "rondos"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-rondo-category"
+      },
+      "alt": "Circular musical patterns representing Chopin's rondos"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Variation",
+    "pluralName": "Variations",
+    "slug": {
+      "_type": "slug",
+      "current": "variations"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-variations-category"
+      },
+      "alt": "Musical theme variations representing Chopin's variations"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Chamber Work",
+    "pluralName": "Chamber Works",
+    "slug": {
+      "_type": "slug",
+      "current": "chamber-works"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-chamber-category"
+      },
+      "alt": "Small ensemble instruments representing Chopin's chamber works"
+    }
+  },
+  {
+    "_type": "category",
+    "name": "Other Work",
+    "pluralName": "Other Works",
+    "slug": {
+      "_type": "slug",
+      "current": "other-works"
+    },
+    "image": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-other-category"
+      },
+      "alt": "Miscellaneous musical elements representing Chopin's other works"
+    }
+  }
+]

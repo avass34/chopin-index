@@ -29,6 +29,8 @@
   },
   "spotifyUrl": "https://open.spotify.com/episode/1234567890abcdef",
   "youtubeUrl": "https://www.youtube.com/watch?v=example123",
+  "applePodcastUrl": "https://podcasts.apple.com/podcast/episode/1234567890",
+  "pageLink": "https://example.com/podcast/chopins-nocturnes-episode",
   "description": "In this episode, we explore Chopin's revolutionary nocturnes and how they transformed the genre. We'll discuss the influence of John Field, Chopin's innovations in the form, and examine some of his most beautiful nocturnes including the famous Op. 9, No. 2. Join us as we discover why these pieces continue to captivate audiences nearly 200 years after they were written.",
   "duration": "00:45:30"
 }
