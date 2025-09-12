@@ -1,8 +1,9 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { client } from "../../../../lib/sanity.client";
-import { getChopinProfileQuery, getAllImageGalleryQuery } from "../../../../lib/queries";
+import { getChopinProfileQuery, getAllImageGalleryQuery, getAllPodcastSnippetsQuery } from "../../../../lib/queries";
 import Navbar from "../../../components/Navbar";
+import PodcastSeasonToggle from "../../../components/PodcastSeasonToggle";
 
 interface ChopinProfile {
   _id: string;
@@ -98,9 +99,10 @@ function renderRichText(content: RichTextBlock[]) {
 }
 
 export default async function ChopinBiography() {
-  const [chopinProfile, imageGallery] = await Promise.all([
+  const [chopinProfile, imageGallery, episodes] = await Promise.all([
     getChopinProfile(),
-    getImageGallery()
+    getImageGallery(),
+    client.fetch(getAllPodcastSnippetsQuery)
   ]);
 
   console.log('Extended Biography:', chopinProfile?.extendedBiography);
@@ -195,6 +197,11 @@ export default async function ChopinBiography() {
             </div>
           </section>
         )}
+        
+        {/* Podcast Section */}
+        <div className={styles.podcastSection}>
+          <PodcastSeasonToggle episodes={episodes} />
+        </div>
       </main>
     </div>
   );

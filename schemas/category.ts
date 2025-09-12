@@ -45,6 +45,12 @@ export default defineType({
       type: 'string',
       description: 'Detailed description of the category image',
     }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'string',
+      description: 'Short description for the category page hero section',
+    }),
   ],
   preview: {
     select: {

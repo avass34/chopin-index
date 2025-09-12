@@ -318,3 +318,11 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Podcast Section */
+.podcastSection {
+  border-top: 1px solid var(--border);
+  width: 100%;
+  max-width: 1300px;
+  margin-top: 10vh;
+}

@@ -73,7 +73,7 @@
 
 /* Chopin Biography Section */
 .chopinBioSection {
-  margin-bottom: 20vh;
+  margin-bottom: 15vh;
   z-index: 10;
 }
 
@@ -193,7 +193,7 @@
 
 /* Popular Works Section */
 .popularWorksRow {
-  margin-bottom: 3rem;
+  margin-bottom: 20vh;
   z-index: 10;
   position: relative;
 }
@@ -627,7 +627,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(ellipse 150% 120% at top right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
+  background: radial-gradient(ellipse 100% 100% at top right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 1) 100%);
   z-index: 3;
   pointer-events: none;
 }

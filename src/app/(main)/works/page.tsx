@@ -7,7 +7,6 @@ import styles from './page.module.css';
 import Navbar from '../../../components/Navbar';
 import { useEffect, useState } from 'react';
 
-
 interface Category {
   _id: string;
   name: string;
@@ -45,6 +44,47 @@ async function getCategories(): Promise<Category[]> {
 
 async function getOpuses(): Promise<Opus[]> {
   return await client.fetch(getAllOpusesQuery);
+}
+
+function formatKey(key: string): string {
+  const keyMap: { [key: string]: string } = {
+    'C': 'C Major',
+    'Cm': 'C Minor',
+    'C#': 'C-sharp Major',
+    'C#m': 'C-sharp Minor',
+    'D': 'D Major',
+    'Dm': 'D Minor',
+    'D#': 'D-sharp Major',
+    'D#m': 'D-sharp Minor',
+    'E': 'E Major',
+    'Em': 'E Minor',
+    'F': 'F Major',
+    'Fm': 'F Minor',
+    'F#': 'F-sharp Major',
+    'F#m': 'F-sharp Minor',
+    'G': 'G Major',
+    'Gm': 'G Minor',
+    'G#': 'G-sharp Major',
+    'G#m': 'G-sharp Minor',
+    'A': 'A Major',
+    'Am': 'A Minor',
+    'A#': 'A-sharp Major',
+    'A#m': 'A-sharp Minor',
+    'B': 'B Major',
+    'Bm': 'B Minor',
+    'Bb': 'B-flat Major',
+    'Bbm': 'B-flat Minor',
+    'Eb': 'E-flat Major',
+    'Ebm': 'E-flat Minor',
+    'Ab': 'A-flat Major',
+    'Abm': 'A-flat Minor',
+    'Db': 'D-flat Major',
+    'Dbm': 'D-flat Minor',
+    'Gb': 'G-flat Major',
+    'Gbm': 'G-flat Minor',
+  };
+  
+  return keyMap[key] || key;
 }
 
 function getCategoryStats(opuses: Opus[], categories: Category[]) {
@@ -283,7 +323,7 @@ export default function WorksPage() {
                           href={`/works/${work.slug}`} 
                           className={styles.workLink}
                         >
-                          {work.pieceTitle} in {work.key}
+                          {work.pieceTitle} in {formatKey(work.key)}
                           {work.nickname && (
                             <span className={styles.workNickname}> - {work.nickname}</span>
                           )}

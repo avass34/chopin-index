@@ -142,6 +142,47 @@ async function getOpuses(): Promise<Opus[]> {
   return await client.fetch(getAllOpusesQuery);
 }
 
+function formatKey(key: string): string {
+  const keyMap: { [key: string]: string } = {
+    'C': 'C Major',
+    'Cm': 'C Minor',
+    'C#': 'C-sharp Major',
+    'C#m': 'C-sharp Minor',
+    'D': 'D Major',
+    'Dm': 'D Minor',
+    'D#': 'D-sharp Major',
+    'D#m': 'D-sharp Minor',
+    'E': 'E Major',
+    'Em': 'E Minor',
+    'F': 'F Major',
+    'Fm': 'F Minor',
+    'F#': 'F-sharp Major',
+    'F#m': 'F-sharp Minor',
+    'G': 'G Major',
+    'Gm': 'G Minor',
+    'G#': 'G-sharp Major',
+    'G#m': 'G-sharp Minor',
+    'A': 'A Major',
+    'Am': 'A Minor',
+    'A#': 'A-sharp Major',
+    'A#m': 'A-sharp Minor',
+    'B': 'B Major',
+    'Bm': 'B Minor',
+    'Bb': 'B-flat Major',
+    'Bbm': 'B-flat Minor',
+    'Eb': 'E-flat Major',
+    'Ebm': 'E-flat Minor',
+    'Ab': 'A-flat Major',
+    'Abm': 'A-flat Minor',
+    'Db': 'D-flat Major',
+    'Dbm': 'D-flat Minor',
+    'Gb': 'G-flat Major',
+    'Gbm': 'G-flat Minor',
+  };
+  
+  return keyMap[key] || key;
+}
+
 function getCategoryStats(opuses: Opus[], categories: Category[]) {
   const categoryCounts: { [key: string]: number } = {};
   
@@ -261,42 +302,6 @@ export default function Home() {
 
       <main className={styles.main}>
          <div style={{ zIndex: 9 }}>
-           {/* Popular Works Section - Full Width */}
-           {popularWorks.length > 0 && (
-             <div className={styles.popularWorksRow}>
-               <h2 className={`${styles.popularWorksTitle} ${hoveredCategoryId ? styles.faded : ''}`}>Popular Works</h2>
-               <div className={`${styles.popularWorksList} ${hoveredCategoryId ? styles.faded : ''}`}>
-                 {popularWorks.map((work) => {
-                   // Find the opus that contains this work
-                   const workOpus = opuses.find(opus => 
-                     opus.works && opus.works.some(opusWork => opusWork._id === work._id)
-                   );
-                   
-                   return (
-                     <div key={work._id} className={styles.popularWorkItem}>
-                       {workOpus && (
-                         <p className={styles.popularWorkOpus}>
-                           {workOpus.title.startsWith('Op.') ? workOpus.title : `Op. ${workOpus.title}`}
-                         </p>
-                       )}
-                       <Link href={`/works/${work.slug}`} className={styles.popularWorkLink}>
-                         {work.pieceTitle} in {work.key}
-                         {work.nickname && (
-                           <span className={styles.popularWorkNickname}> &ldquo;{work.nickname}&rdquo;</span>
-                         )}
-                       </Link>
-                       <div className={styles.popularWorkMeta}>
-                         <span className={styles.popularWorkYear}>
-                           {work.yearOfComposition}
-                         </span>
-                       </div>
-                     </div>
-                   );
-                 })}
-               </div>
-             </div>
-           )}
-
            {/* Chopin Biography Section - Full Width Below */}
            <div className={styles.chopinBioSection}>
              <div className={`${styles.chopinCard} ${hoveredCategoryId ? styles.faded : ''}`}>
@@ -342,7 +347,40 @@ export default function Home() {
                </div>
              </div>
            </div>
-
+           {popularWorks.length > 0 && (
+             <div className={styles.popularWorksRow}>
+               <h2 className={`${styles.popularWorksTitle} ${hoveredCategoryId ? styles.faded : ''}`}>Popular Works</h2>
+               <div className={`${styles.popularWorksList} ${hoveredCategoryId ? styles.faded : ''}`}>
+                 {popularWorks.map((work) => {
+                   // Find the opus that contains this work
+                   const workOpus = opuses.find(opus => 
+                     opus.works && opus.works.some(opusWork => opusWork._id === work._id)
+                   );
+                   
+                   return (
+                     <div key={work._id} className={styles.popularWorkItem}>
+                       {workOpus && (
+                         <p className={styles.popularWorkOpus}>
+                           {workOpus.title.startsWith('Op.') ? workOpus.title : `Op. ${workOpus.title}`}
+                         </p>
+                       )}
+                       <Link href={`/works/${work.slug}`} className={styles.popularWorkLink}>
+                         {work.pieceTitle} in {formatKey(work.key)}
+                         {work.nickname && (
+                           <span className={styles.popularWorkNickname}> &ldquo;{work.nickname}&rdquo;</span>
+                         )}
+                       </Link>
+                       <div className={styles.popularWorkMeta}>
+                         <span className={styles.popularWorkYear}>
+                           {work.yearOfComposition}
+                         </span>
+                       </div>
+                     </div>
+                   );
+                 })}
+               </div>
+             </div>
+           )}
           {/* Work Categories - Full Width Below */}
           <div className={styles.categoriesRow}>
             <div className={styles.categoriesGrid}>

@@ -45,12 +45,18 @@ export const getAllWorksQuery = groq`
     "podcastHighlights": podcastHighlights[]{
       spotifyTimestamp,
       youtubeTimestamp,
+      appleTimestamp,
+      title,
+      transcript,
       "podcast": podcast->{
         _id,
         "slug": slug.current,
         title,
         description,
-        pageLink
+        pageLink,
+        spotifyUrl,
+        youtubeUrl,
+        applePodcastUrl
       }
     }
   }
@@ -77,6 +83,9 @@ export const getWorkBySlugQuery = groq`
     "podcastHighlights": podcastHighlights[]{
       spotifyTimestamp,
       youtubeTimestamp,
+      appleTimestamp,
+      title,
+      transcript,
       "podcast": podcast->{
         _id,
         title,
@@ -84,7 +93,10 @@ export const getWorkBySlugQuery = groq`
         seasonNumber,
         episodeNumber,
         "imageUrl": image.asset->url,
-        pageLink
+        pageLink,
+        spotifyUrl,
+        youtubeUrl,
+        applePodcastUrl
       }
     },
     "opus": *[_type == "opus" && references(^._id)][0]{
@@ -221,7 +233,8 @@ export const getAllCategoriesQuery = groq`
     pluralName,
     "slug": slug.current,
     "imageUrl": image.asset->url,
-    imageDescription
+    imageDescription,
+    description
   }
 `
 

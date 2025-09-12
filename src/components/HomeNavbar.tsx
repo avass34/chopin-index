@@ -13,7 +13,7 @@ export default function HomeNavbar() {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       
-      setIsExpanded(scrollY > window.innerHeight * 0.5);
+      setIsExpanded(scrollY > window.innerHeight * 0.9);
       
       const scrollableNavbar = document.querySelector('[data-scrollable-navbar]');
       if (scrollableNavbar) {
