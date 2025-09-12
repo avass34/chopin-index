@@ -32,6 +32,7 @@ export async function getPopularWorks() {
       "slug": slug.current,
       pieceTitle,
       nickname,
+      key,
       isPopular,
       yearOfComposition,
       duration,

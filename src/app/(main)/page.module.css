@@ -3,35 +3,78 @@
 .page {
   background: var(--background);
   min-height: 100vh;
-  padding: 2rem 0;
+}
+
+/* Hero Section */
+.heroSection {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 9;
+}
+
+.heroContent {
+  text-align: center;
+  max-width: 800px;
+  padding: 0 2rem;
+  z-index: 9;
+}
+
+.heroTitle {
+  font-family: var(--font-heading);
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 2rem 0;
+  letter-spacing: -0.02em;
+}
+
+.heroDescription {
+  font-family: var(--font-paragraph);
+  font-size: 1.25rem;
+  color: var(--white);
+  line-height: 1.6;
+  margin: 0 0 3rem 0;
+  opacity: 0.9;
+}
+
+.browseButton {
+  display: inline-block;
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-family: var(--font-headers);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.browseButton:hover {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .main {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 4rem 1rem 2rem 1rem;
+  position: relative;
+  z-index: 5;
 }
 
-/* Two Column Layout */
-.twoColumnLayout {
-  display: grid;
-  grid-template-columns: 75% 25%;
-  gap: 3rem;
-  margin-bottom: 4rem;
-}
-
-.leftColumn {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-}
-
-.rightColumn {
-  display: flex;
-  flex-direction: column;
-  position: sticky;
-  top: 8rem; /* Position below the floating navbar */
-  height: fit-content;
+/* Chopin Biography Section */
+.chopinBioSection {
+  margin-bottom: 20vh;
+  z-index: 10;
 }
 
 .title {
@@ -49,16 +92,26 @@
 
 /* Chopin Profile Card */
 .chopinCard {
-  background: var(--surface);
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 2rem;
-  border: 2px solid var(--border);
-  text-align: center;
   position: relative;
   overflow: hidden;
+}
+
+.chopinContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.chopinInfo {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
 }
 
 
@@ -71,16 +124,10 @@
 
 .profileImage {
   border-radius: 12px;
-  box-shadow: 0 15px 35px rgba(255, 199, 0, 0.2);
   transition: transform 0.3s ease;
   max-width: 100%;
   height: auto;
 }
-
-.profileImage:hover {
-  transform: scale(1.05);
-}
-
 .chopinName {
   font-family: var(--font-heading);
   font-size: 2rem;
@@ -88,6 +135,7 @@
   color: var(--white);
   margin: 0 0 0.5rem 0;
   letter-spacing: -0.01em;
+  text-align: left;
 }
 
 .chopinDates {
@@ -117,9 +165,37 @@
   margin: 0;
 }
 
+.bioLinkContainer {
+  margin-top: 1.5rem;
+}
+
+.bioLink {
+  display: inline-block;
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-family: var(--font-headers);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.bioLink:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
 /* Popular Works Section */
 .popularWorksRow {
   margin-bottom: 3rem;
+  z-index: 10;
+  position: relative;
 }
 
 .popularWorksTitle {
@@ -128,13 +204,66 @@
   font-weight: 700;
   color: var(--white);
   margin-bottom: 1.5rem;
-  text-align: center;
+  text-align: left;
 }
 
-.popularWorksGrid {
+.popularWorksList {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem 3rem;
+  margin-top: 2rem;
+  column-fill: balance;
+  z-index: 10;
+}
+
+.popularWorkItem {
+  margin-bottom: 1.5rem;
+}
+
+.popularWorkOpus {
+  font-family: var(--font-headers);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 0.05em;
+}
+
+.popularWorkLink {
+  font-family: var(--font-headers);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  line-height: 1.4;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.popularWorkLink:hover {
+  color: var(--primary);
+}
+
+.popularWorkNickname {
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.popularWorkMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.popularWorkYear {
+  font-family: var(--font-headers);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Bottom Row - Work Categories */
@@ -149,24 +278,29 @@
 }
 
 .categoryCard {
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  padding: 2rem;
+  padding: 4rem 2rem;
   text-decoration: none;
   color: inherit;
-  border: 2px solid var(--border);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
+  z-index: 10;
   overflow: hidden;
+  min-height: 120px;
 }
-
-
 
 .categoryContent {
   position: relative;
   z-index: 1;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .categoryName {
@@ -174,8 +308,8 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--white);
-  margin: 0 0 1rem 0;
   text-transform: uppercase;
+  margin-bottom: 0;
   letter-spacing: 0.05em;
 }
 
@@ -192,6 +326,8 @@
 /* Latest Episodes Section */
 .episodesSection {
   margin-top: 5rem;
+  z-index: 10;
+
 }
 
 .episodesTitle {
@@ -231,7 +367,6 @@
 .coverArt {
   border-radius: 12px;
   object-fit: cover;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
 }
 
@@ -268,7 +403,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
 }
 
 .episodeNumber {
@@ -339,7 +473,20 @@
 
 @media (max-width: 768px) {
   .page {
-    padding: 1rem 0;
+    padding: 0;
+  }
+  
+  .heroTitle {
+    font-size: 3rem;
+  }
+  
+  .heroDescription {
+    font-size: 1.1rem;
+  }
+  
+  .browseButton {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
   }
   
   .title {
@@ -359,9 +506,9 @@
     font-size: 1.75rem;
   }
   
-  .popularWorksGrid {
+  .popularWorksList {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
   }
   
   .popularWorksTitle {
@@ -403,6 +550,19 @@
 }
 
 @media (max-width: 480px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+  
+  .heroDescription {
+    font-size: 1rem;
+  }
+  
+  .browseButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
   .main {
     padding: 0 0.5rem;
   }
@@ -426,4 +586,53 @@
   .categoriesGrid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Category Image Background - Always visible, just swaps images */
+.categoryImageBackground {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: top right;
+  background-repeat: no-repeat;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Black Sheet - Fades in/out to reveal/hide background */
+.blackSheet {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 1);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.blackSheet.visible {
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.blackOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse 150% 120% at top right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.faded {
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
 }

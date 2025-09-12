@@ -12,7 +12,7 @@ interface PodcastEpisode {
   seasonNumber: number;
   episodeNumber: number;
   description: string;
-  duration: number;
+  duration: number | string;
   imageUrl?: string;
   spotifyUrl?: string;
   youtubeUrl?: string;
@@ -24,9 +24,36 @@ interface PodcastSeasonToggleProps {
   episodes: PodcastEpisode[];
 }
 
-function formatPodcastDuration(seconds: number): string {
+function formatPodcastDuration(duration: number | string): string {
+  // Handle time format like "02:37:00" (hours:minutes:seconds)
+  if (typeof duration === 'string' && duration.includes(':')) {
+    const parts = duration.split(':');
+    if (parts.length === 3) {
+      // Format: HH:MM:SS
+      const hours = parseInt(parts[0], 10);
+      const minutes = parseInt(parts[1], 10);
+      const seconds = parseInt(parts[2], 10);
+      
+      if (hours > 0) {
+        return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      } else {
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      }
+    } else if (parts.length === 2) {
+      // Format: MM:SS
+      return duration;
+    }
+  }
+  
+  // Handle numeric input (seconds)
+  const seconds = typeof duration === 'string' ? parseFloat(duration) : duration;
+  
+  if (isNaN(seconds) || seconds < 0) {
+    return '0:00';
+  }
+  
   const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
+  const remainingSeconds = Math.floor(seconds % 60);
   return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
@@ -80,9 +107,6 @@ export default function PodcastSeasonToggle({ episodes }: PodcastSeasonTogglePro
           </button>
           <div className={styles.seasonInfo}>
             <span className={styles.seasonLabel}>Season {currentSeason}</span>
-            <span className={styles.episodeCount}>
-              {currentSeasonEpisodes.length} episode{currentSeasonEpisodes.length !== 1 ? 's' : ''}
-            </span>
           </div>
           <button 
             className={styles.navButton} 
@@ -123,7 +147,7 @@ export default function PodcastSeasonToggle({ episodes }: PodcastSeasonTogglePro
               <div className={styles.episodeInfo}>
                 <div className={styles.episodeHeader}>
                   <span className={styles.episodeNumber}>
-                    S{episode.seasonNumber}E{episode.episodeNumber}
+                    Episode {episode.episodeNumber}
                   </span>
                   <span className={styles.episodeDuration}>
                     {formatPodcastDuration(episode.duration)}

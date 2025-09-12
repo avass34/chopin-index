@@ -3,14 +3,22 @@ import Image from 'next/image';
 import { getAllPianistsQuery } from '../../../../lib/queries';
 import { client } from '../../../../lib/sanity.client';
 import styles from './page.module.css';
+import Navbar from '../../../components/Navbar';
+
+interface RichTextBlock {
+  _type: string;
+  style?: string;
+  children?: Array<{ text: string }>;
+}
 
 interface Pianist {
   _id: string;
   name: string;
   slug: string;
+  nationality: string;
   dateBorn: string;
   dateDead?: string;
-  biography: string;
+  biography: string | RichTextBlock[];
   imageUrl?: string;
 }
 
@@ -18,21 +26,26 @@ async function getPianists(): Promise<Pianist[]> {
   return await client.fetch(getAllPianistsQuery);
 }
 
-function formatYear(dateString: string): string {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  return date.getFullYear().toString();
-}
 
 export default async function PianistBiographiesPage() {
   const pianists = await getPianists();
 
   return (
     <div className={styles.page}>
+      <Navbar />
+      <Image
+        src="/ChopinBG.webp"
+        alt="Background"
+        fill
+        priority
+        unoptimized
+        className={styles.backgroundImage}
+      />
+      <div className={styles.blackOverlay} />
       <main className={styles.main}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Pianist Biographies</h1>
-          <p className={styles.subtitle}>
+        <div className={styles.heroSection}>
+          <h1 className={styles.heroTitle}>Pianist Biographies</h1>
+          <p className={styles.heroDescription}>
             Discover the lives and legacies of the world&apos;s greatest pianists
           </p>
         </div>
@@ -68,15 +81,7 @@ export default async function PianistBiographiesPage() {
                   </div>
                   <div className={styles.pianistInfo}>
                     <h3 className={styles.pianistName}>{pianist.name}</h3>
-                    <p className={styles.pianistYears}>
-                      {formatYear(pianist.dateBorn)} - {pianist.dateDead ? formatYear(pianist.dateDead) : 'Present'}
-                    </p>
-                    <p className={styles.pianistBio}>
-                      {pianist.biography.length > 200 
-                        ? `${pianist.biography.substring(0, 200)}...` 
-                        : pianist.biography
-                      }
-                    </p>
+                    <p className={styles.pianistNationality}>{pianist.nationality}</p>
                   </div>
                 </Link>
               ))}

@@ -1,36 +1,21 @@
+import Image from "next/image";
 import Link from "next/link";
 import styles from "../layout.module.css";
-
-function Navbar() {
-  return (
-    <nav className={styles.navbar}>
-      <div className={styles.navbarContent}>
-        <Link href="/" className={styles.navbarBrand}>
-          <span className={styles.brandText}>Chopin <span>Index</span></span>
-        </Link>
-        
-        <div className={styles.navbarLinks}>
-          <Link href="/chopin-biography" className={styles.navLink}>
-            Chopin
-          </Link>
-          <Link href="/works" className={styles.navLink}>
-            Works
-          </Link>
-          <Link href="https://www.chopinpodcast.com/" className={styles.navLink} target="_blank" rel="noopener noreferrer">
-            Podcast
-          </Link>
-        </div>
-      </div>
-    </nav>
-  );
-}
 
 function Footer() {
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
         <div className={styles.footerSection}>
-          <h3 className={styles.footerTitle}>Chopin Index</h3>
+          <div className={styles.footerLogo}>
+            <Image
+              src="/OpusLibrary.png"
+              alt="Chopin Index"
+              height={60}
+              width={200}
+              unoptimized
+            />
+          </div>
           <p className={styles.footerDescription}>
             Discover the world of Chopin through his works, the pianists who interpret them, and insightful podcast discussions.
           </p>
@@ -42,11 +27,14 @@ function Footer() {
             <Link href="/" className={styles.footerLink}>
               Home
             </Link>
+            <Link href="/chopin-biography" className={styles.footerLink}>
+              Chopin Biography
+            </Link>
             <Link href="/works" className={styles.footerLink}>
               Works
             </Link>
-            <Link href="/pianist-biographies" className={styles.footerLink}>
-              Pianist Biographies
+            <Link href="https://www.chopinpodcast.com/" className={styles.footerLink} target="_blank" rel="noopener noreferrer">
+              The Chopin Podcast
             </Link>
           </nav>
         </div>
@@ -55,7 +43,7 @@ function Footer() {
       
       <div className={styles.footerBottom}>
         <p className={styles.copyright}>
-          © {new Date().getFullYear()} Chopin Index. All rights reserved.
+          © {new Date().getFullYear()} The Chopin Podcast. All rights reserved.
         </p>
       </div>
     </footer>
@@ -69,7 +57,6 @@ export default function MainLayout({
 }) {
   return (
     <div className={styles.layout}>
-      <Navbar />
       <main className={styles.main}>
         {children}
       </main>

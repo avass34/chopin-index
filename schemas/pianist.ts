@@ -23,6 +23,13 @@ export default defineType({
       description: 'URL-friendly identifier for the pianist (e.g., arthur-rubinstein)',
     }),
     defineField({
+      name: 'nationality',
+      title: 'Nationality',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+      description: 'Nationality of the pianist (e.g., Polish, Russian, American)',
+    }),
+    defineField({
       name: 'dateBorn',
       title: 'Date Born',
       type: 'date',
@@ -38,9 +45,44 @@ export default defineType({
     defineField({
       name: 'biography',
       title: 'Biography',
-      type: 'text',
-      validation: (Rule) => Rule.required().min(10).max(1000),
-      description: 'A brief biography of the pianist (max 1000 characters)',
+      type: 'array',
+      of: [
+        {
+          type: 'block',
+          styles: [
+            { title: 'Normal', value: 'normal' },
+            { title: 'H2', value: 'h2' },
+            { title: 'H3', value: 'h3' },
+            { title: 'Quote', value: 'blockquote' },
+          ],
+          lists: [
+            { title: 'Bullet', value: 'bullet' },
+            { title: 'Number', value: 'number' },
+          ],
+          marks: {
+            decorators: [
+              { title: 'Strong', value: 'strong' },
+              { title: 'Emphasis', value: 'em' },
+            ],
+            annotations: [
+              {
+                title: 'URL',
+                name: 'link',
+                type: 'object',
+                fields: [
+                  {
+                    title: 'URL',
+                    name: 'href',
+                    type: 'url',
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+      validation: (Rule) => Rule.required().min(1),
+      description: 'Detailed biography of the pianist with rich text formatting',
     }),
     defineField({
       name: 'image',

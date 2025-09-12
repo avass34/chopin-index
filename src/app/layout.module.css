@@ -7,28 +7,101 @@
   background: var(--background);
 }
 
-/* Floating Navbar */
-.navbar {
+/* Main Navbar Container (for non-home pages) */
+.mainNavbarContainer {
   position: fixed;
-  top: 2rem;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: auto;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 2rem;
+  background: transparent;
+}
+
+/* Floating Navbar Container (for home page) */
+.navbarContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: auto;
+  z-index: 1000;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 2rem;
+}
+
+.navbarContainerVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.navbarContainerHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scrollableNavbarVisible {
+  opacity: 1;
+  pointer-events: auto;
+  top: calc(25vh);
+}
+
+.scrollableNavbarHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scrollableNavbarContainer {
+  position: absolute;
+  top: 25vh;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000;
+  z-index: 999;
+  pointer-events: auto;
+}
+
+.navbar {
+  position: relative;
+  z-index: 1001;
   max-width: 800px;
-  width: calc(100% - 4rem);
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 50px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: auto;
+}
+
+/* Home page navbar states */
+.navbarCollapsed {
+  width: auto;
+  min-width: fit-content;
+  max-width: fit-content;
+}
+
+.navbarExpanded {
+  width: calc(100% - 2rem);
+  max-width: 800px;
 }
 
 .navbarContent {
-  padding: 0 2rem;
+  padding: 0 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 4rem;
+}
+
+.navbarCollapsed .navbarContent {
+  justify-content: center;
 }
 
 .navbarBrand {
@@ -36,7 +109,9 @@
   color: inherit;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  height: 100%;
+  padding: 0.5rem 0;
+  width: fit-content;
 }
 
 .brandText {
@@ -51,10 +126,37 @@
   color: var(--accent);
 }
 
+.brandLogo {
+  border-radius: 8px;
+  object-fit: contain;
+  height: 100%;
+  width: auto;
+}
+
 .navbarLinks {
   display: flex;
   gap: 2.5rem;
   align-items: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 0;
+  overflow: hidden;
+}
+
+.navbarLinksVisible {
+  opacity: 1;
+  visibility: visible;
+  display: flex;
+  transform: translateX(0);
+  max-width: 500px;
+  gap: 2rem;
+  margin-right: 1.5rem;
+}
+
+.navbarLinksHidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  max-width: 0;
 }
 
 .navLink {
@@ -71,28 +173,23 @@
 }
 
 .navLink:hover {
-  color: var(--accent);
   transform: translateY(-2px);
 }
-
-
 
 .main {
   flex: 1;
   background: var(--background);
-  padding-top: 6rem; /* Space for fixed navbar */
 }
 
 /* Footer */
 .footer {
+  z-index: 5;
   background: var(--surface);
   color: var(--white);
   padding: 4rem 0 2rem;
   margin-top: auto;
   position: relative;
 }
-
-
 
 .footerContent {
   max-width: 1200px;
@@ -115,8 +212,13 @@
   font-size: 2rem;
   font-weight: 700;
   margin: 0;
-  color: var(--accent);
+  color: var(--white);
   letter-spacing: -0.01em;
+}
+
+.footerLogo img {
+  height: auto;
+  max-width: 100%;
 }
 
 .footerDescription {
@@ -133,7 +235,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--accent);
+  color: var(--white);
   margin: 0 0 1rem 0;
 }
 
@@ -154,7 +256,6 @@
 }
 
 .footerLink:hover {
-  color: var(--accent);
   transform: translateX(8px);
 }
 
@@ -183,8 +284,16 @@
 }
 
 @media (max-width: 768px) {
+  .navbarContainer {
+    height: 20vh;
+    padding-top: 1rem;
+  }
+  
+  .scrollableNavbarContainer {
+    top: calc(20vh - 3.5rem - 1rem);
+  }
+  
   .navbar {
-    top: 1rem;
     width: calc(100% - 2rem);
     border-radius: 40px;
   }
@@ -225,8 +334,16 @@
 }
 
 @media (max-width: 480px) {
+  .navbarContainer {
+    height: 15vh;
+    padding-top: 0.5rem;
+  }
+  
+  .scrollableNavbarContainer {
+    top: calc(15vh - 3rem - 0.5rem);
+  }
+  
   .navbar {
-    top: 0.5rem;
     width: calc(100% - 1rem);
     border-radius: 30px;
   }

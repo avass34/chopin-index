@@ -5,6 +5,7 @@ export const getAllPianistsQuery = groq`
     _id,
     name,
     "slug": slug.current,
+    nationality,
     dateBorn,
     dateDead,
     biography,
@@ -17,6 +18,7 @@ export const getPianistBySlugQuery = groq`
     _id,
     name,
     "slug": slug.current,
+    nationality,
     dateBorn,
     dateDead,
     biography,
@@ -141,6 +143,7 @@ export const getWorksByPianistQuery = groq`
     "slug": slug.current,
     pieceTitle,
     nickname,
+    key,
     isPopular,
     yearOfComposition,
     duration,
@@ -187,12 +190,18 @@ export const getPopularWorksQuery = groq`
     yearOfComposition,
     duration,
     description,
-    movements
+    movements,
+    key,
+    "opus": *[_type == "opus" && references(^._id)][0]{
+      _id,
+      title,
+      date
+    }
   }
 `
 
 export const getChopinProfileQuery = groq`
-  *[_type == "chopinProfile"][0] {
+  *[_type == "chopinProfile" && _id == "chopin-profile"][0] {
     _id,
     "profileImageUrl": profileImage.asset->url,
     "profileImageAlt": profileImage.alt,
@@ -230,7 +239,7 @@ export const getAllOpusesQuery = groq`
     title,
     "slug": slug.current,
     date,
-    "category": opus->category->{
+    "category": category->{
       _id,
       name,
       pluralName,
@@ -241,6 +250,8 @@ export const getAllOpusesQuery = groq`
     "works": works[]->{
       _id,
       pieceTitle,
+      nickname,
+      key,
       "slug": slug.current
     }
   }

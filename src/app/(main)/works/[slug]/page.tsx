@@ -5,6 +5,7 @@ import { client } from "../../../../../lib/sanity.client";
 import { getWorkBySlugQuery, getAllWorksQuery } from "../../../../../lib/queries";
 import { notFound } from "next/navigation";
 import styles from "./page.module.css";
+import Navbar from "../../../../components/Navbar";
 
 interface Work {
   _id: string;
@@ -123,59 +124,70 @@ export default async function WorkPage({ params }: PageProps) {
 
   return (
     <div className={styles.page}>
-      <div className={styles.container}>
-        <div className={styles.workCard}>
-          {/* Header */}
-          <div className={styles.header}>
-            <div className={styles.headerContent}>
-              <h1 className={styles.title}>
-                {work.pieceTitle}
-              </h1>
-              <div className={styles.metaTags}>
-                {work.opus?.category && (
-                  <span className={styles.metaTag}>
-                    {work.opus.category.name}
-                  </span>
-                )}
-                {work.key && (
-                  <span className={styles.metaTag}>
-                    {work.key}
-                  </span>
-                )}
-                {work.opus?.title && (
-                  <span className={styles.metaTag}>
-                    {work.opus.title}
-                  </span>
-                )}
-                <span className={styles.metaTag}>
-                  {work.yearOfComposition}
+      <Navbar />
+      <Image
+        src="/ChopinBG.webp"
+        alt="Background"
+        fill
+        priority
+        unoptimized
+        className={styles.backgroundImage}
+      />
+      <div className={styles.blackOverlay} />
+      <main className={styles.main}>
+        {/* Hero Section */}
+        <div className={styles.heroSection}>
+          <div className={styles.heroContent}>
+            <Link href="/works" className={styles.backLink}>
+              ← All Works
+            </Link>
+            <h1 className={styles.heroTitle}>
+              {work.pieceTitle} in {work.key}
+              {work.nickname && (
+                <span className={styles.heroNickname}> &ldquo;{work.nickname}&rdquo;</span>
+              )}
+            </h1>
+            <div className={styles.heroMeta}>
+              {work.opus?.category && (
+                <span className={styles.heroMetaTag}>
+                  {work.opus.category.name}
                 </span>
-                <span className={styles.metaTag}>
-                  {formatDuration(work.duration)}
+              )}
+              {work.opus?.title && (
+                <span className={styles.heroMetaTag}>
+                  {work.opus.title}
                 </span>
-              </div>
-              {work.imslpImageUrl && (
+              )}
+              <span className={styles.heroMetaTag}>
+                {work.yearOfComposition}
+              </span>
+              <span className={styles.heroMetaTag}>
+                {formatDuration(work.duration)}
+              </span>
+            </div>
+            {work.imslpImageUrl && (
+              <div className={styles.scoreImageContainer}>
                 <Image
                   src={work.imslpImageUrl}
                   alt={`Score image for ${work.pieceTitle}`}
-                  width={300}
-                  height={200}
+                  width={400}
+                  height={300}
                   className={styles.scoreImage}
                 />
-              )}
-            </div>
+              </div>
+            )}
           </div>
+        </div>
 
-          {/* Content */}
-          <div className={styles.content}>
-
-            {/* Description */}
-            <div className={styles.section}>
-              <h2 className={styles.sectionTitle}>Description</h2>
-              <p className={styles.description}>
-                {work.description}
-              </p>
-            </div>
+        {/* Content */}
+        <div className={styles.content}>
+          {/* Description */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Description</h2>
+            <p className={styles.description}>
+              {work.description}
+            </p>
+          </div>
 
             {/* Movements */}
             {work.movements && work.movements.length > 0 && (
@@ -276,9 +288,8 @@ export default async function WorkPage({ params }: PageProps) {
                 </a>
               </div>
             )}
-          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

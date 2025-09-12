@@ -166,19 +166,77 @@ export default defineType({
             type: 'string',
             description: 'Timestamp in format HH:MM:SS where this piece is discussed on YouTube',
           },
+          {
+            name: 'appleTimestamp',
+            title: 'Apple Timestamp',
+            type: 'string',
+            description: 'Timestamp in format HH:MM:SS where this piece is discussed on Apple Podcasts',
+          },
+          {
+            name: 'title',
+            title: 'Title',
+            type: 'string',
+            description: 'Title for this specific podcast highlight segment',
+          },
+          {
+            name: 'transcript',
+            title: 'Transcript',
+            type: 'array',
+            of: [
+              {
+                type: 'block',
+                styles: [
+                  { title: 'Normal', value: 'normal' },
+                  { title: 'H1', value: 'h1' },
+                  { title: 'H2', value: 'h2' },
+                  { title: 'H3', value: 'h3' },
+                  { title: 'Quote', value: 'blockquote' },
+                ],
+                lists: [
+                  { title: 'Bullet', value: 'bullet' },
+                  { title: 'Number', value: 'number' },
+                ],
+                marks: {
+                  decorators: [
+                    { title: 'Strong', value: 'strong' },
+                    { title: 'Emphasis', value: 'em' },
+                    { title: 'Code', value: 'code' },
+                  ],
+                  annotations: [
+                    {
+                      title: 'URL',
+                      name: 'link',
+                      type: 'object',
+                      fields: [
+                        {
+                          title: 'URL',
+                          name: 'href',
+                          type: 'url',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            description: 'Transcript of the podcast segment discussing this piece',
+          },
         ],
         preview: {
           select: {
             title: 'podcast.title',
+            highlightTitle: 'title',
             spotifyTimestamp: 'spotifyTimestamp',
             youtubeTimestamp: 'youtubeTimestamp',
+            appleTimestamp: 'appleTimestamp',
           },
           prepare(selection) {
-            const { title, spotifyTimestamp, youtubeTimestamp } = selection
-            const timestamps = [spotifyTimestamp, youtubeTimestamp].filter(Boolean)
+            const { title, highlightTitle, spotifyTimestamp, youtubeTimestamp, appleTimestamp } = selection
+            const timestamps = [spotifyTimestamp, youtubeTimestamp, appleTimestamp].filter(Boolean)
             const subtitle = timestamps.length > 0 ? timestamps.join(' / ') : 'No timestamps'
+            const displayTitle = highlightTitle || title || 'Untitled Podcast'
             return {
-              title: title || 'Untitled Podcast',
+              title: displayTitle,
               subtitle: subtitle,
             }
           },

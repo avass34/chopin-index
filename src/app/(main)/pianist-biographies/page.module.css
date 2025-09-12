@@ -1,124 +1,170 @@
+/* Pianist Biographies Page - Consistent with App Design */
+
 .page {
+  background: var(--background);
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem 0;
+  position: relative;
+}
+
+/* Background Image */
+.backgroundImage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  object-position: right bottom;
+  z-index: -1;
+}
+
+.blackOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+    circle at 30% 20%,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  z-index: 0;
 }
 
 .main {
-  max-width: 1200px;
+  position: relative;
+  z-index: 5;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 2rem;
 }
 
-.header {
+/* Hero Section */
+.heroSection {
   text-align: center;
-  margin-bottom: 3rem;
-  color: white;
+  margin-bottom: 2rem;
+  padding: 6rem 0 2rem 0;
 }
 
-.title {
-  font-size: 3rem;
+.heroTitle {
+  font-family: var(--font-heading);
+  font-size: 4rem;
   font-weight: 700;
-  margin-bottom: 1rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: var(--white);
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.subtitle {
+.heroDescription {
+  font-family: var(--font-paragraph);
   font-size: 1.25rem;
+  color: var(--white);
   opacity: 0.9;
+  line-height: 1.6;
   max-width: 600px;
   margin: 0 auto;
 }
 
+/* Empty State */
 .emptyState {
   text-align: center;
-  background: white;
-  padding: 3rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  margin: 2rem 0;
 }
 
 .emptyState p {
+  font-family: var(--font-paragraph);
   font-size: 1.125rem;
-  color: #6b7280;
+  color: var(--white);
+  opacity: 0.8;
   margin-bottom: 1.5rem;
 }
 
 .primary {
   display: inline-block;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  border-radius: 50px;
   text-decoration: none;
+  font-family: var(--font-headers);
   font-weight: 600;
-  transition: transform 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
 }
 
 .primary:hover {
-  transform: translateY(-2px);
+  background: var(--primary);
+  color: var(--background);
 }
 
+/* Pianists Grid */
 .pianistsContainer {
-  background: white;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
 .pianistsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
   padding: 2rem;
 }
 
+/* Pianist Cards */
 .pianistCard {
-  background: #f8fafc;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 2rem;
   text-decoration: none;
   color: inherit;
-  border: 1px solid #e2e8f0;
-  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-}
-
-.pianistCard:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-  border-color: #cbd5e1;
+  position: relative;
+  overflow: hidden;
 }
 
 .pianistImage {
   margin-bottom: 1.5rem;
   position: relative;
+  z-index: 2;
 }
 
 .portrait {
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .placeholderImage {
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 4px solid white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 3px solid var(--primary);
 }
 
 .placeholderText {
-  color: white;
+  color: var(--white);
+  font-family: var(--font-headers);
   font-size: 3rem;
   font-weight: 700;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -129,37 +175,60 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  position: relative;
+  z-index: 2;
 }
 
 .pianistName {
+  font-family: var(--font-headers);
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--white);
   margin: 0;
   line-height: 1.2;
+  letter-spacing: 0.05em;
+}
+
+.pianistNationality {
+  font-family: var(--font-headers);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
 }
 
 .pianistYears {
-  font-size: 1rem;
-  color: #64748b;
+  font-family: var(--font-paragraph);
+  font-size: 0.9rem;
+  color: var(--white);
+  opacity: 0.8;
   font-weight: 500;
   margin: 0;
 }
 
 .pianistBio {
-  color: #64748b;
+  color: var(--white);
+  font-family: var(--font-paragraph);
   font-size: 0.875rem;
   line-height: 1.6;
   margin: 0;
+  opacity: 0.7;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
-  .title {
-    font-size: 2rem;
+  .main {
+    padding: 1rem;
+  }
+
+  .heroTitle {
+    font-size: 2.5rem;
   }
   
   .pianistsGrid {
@@ -169,7 +238,7 @@
   }
   
   .pianistCard {
-    padding: 1rem;
+    padding: 1.5rem;
   }
   
   .portrait,
@@ -180,5 +249,33 @@
   
   .placeholderText {
     font-size: 2rem;
+  }
+
+  .pianistName {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroDescription {
+    font-size: 1rem;
+  }
+
+  .pianistCard {
+    padding: 1rem;
+  }
+
+  .portrait,
+  .placeholderImage {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .placeholderText {
+    font-size: 1.5rem;
   }
 }

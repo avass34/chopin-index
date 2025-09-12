@@ -1,21 +1,30 @@
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from 'react';
 import styles from "./page.module.css";
 import { client, getPopularWorks } from "../../../lib/sanity.client";
 import { getAllPodcastSnippetsQuery, getChopinProfileQuery, getAllCategoriesQuery, getAllOpusesQuery } from "../../../lib/queries";
-import WorkCard from "../../components/WorkCard";
 import PodcastSeasonToggle from "../../components/PodcastSeasonToggle";
+import HomeNavbar from "../../components/HomeNavbar";
 
 interface Work {
   _id: string;
   slug: string;
   pieceTitle: string;
   nickname?: string;
+  key: string;
   isPopular: boolean;
   yearOfComposition: number;
   duration: number;
   description: string;
   movements?: string[];
+  opus?: {
+    _id: string;
+    title: string;
+    date: string;
+  };
   notablePerformers?: Array<{
     _id: string;
     name: string;
@@ -159,112 +168,220 @@ function getCategoryStats(opuses: Opus[], categories: Category[]) {
   })).sort((a, b) => b.count - a.count);
 }
 
-export default async function Home() {
-  const [episodes, chopinProfile, categories, popularWorks, opuses] = await Promise.all([
-    getPodcastEpisodes(), 
-    getChopinProfile(),
-    getCategories(),
-    getPopularWorksData(),
-    getOpuses()
-  ]);
+export default function Home() {
+  const [episodes, setEpisodes] = useState<PodcastEpisode[]>([]);
+  const [chopinProfile, setChopinProfile] = useState<ChopinProfile | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [popularWorks, setPopularWorks] = useState<Work[]>([]);
+  const [opuses, setOpuses] = useState<Opus[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [hoveredCategoryId, setHoveredCategoryId] = useState<string | null>(null);
 
+  const handleCategoryHover = (categoryData: Category | undefined) => {
+    const background = document.getElementById('categoryImageBackground');
+    const blackSheet = document.getElementById('blackSheet');
+    if (background && blackSheet && categoryData?.imageUrl) {
+      background.style.backgroundImage = `url("${categoryData.imageUrl}")`;
+      blackSheet.style.opacity = '0';
+    }
+    if (categoryData) {
+      setHoveredCategoryId(categoryData._id);
+    }
+  };
 
+  const handleCategoryLeave = () => {
+    const background = document.getElementById('categoryImageBackground');
+    const blackSheet = document.getElementById('blackSheet');
+    if (blackSheet && background) {
+      blackSheet.style.opacity = '1';
+    }
+    if (background) {
+      background.style.backgroundImage = '';
+    }
+    setHoveredCategoryId(null);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [episodesData, chopinProfileData, categoriesData, popularWorksData, opusesData] = await Promise.all([
+          getPodcastEpisodes(), 
+          getChopinProfile(),
+          getCategories(),
+          getPopularWorksData(),
+          getOpuses()
+        ]);
+        
+        console.log('Popular works data:', popularWorksData);
+        console.log('Opuses data:', opusesData);
+        
+        setEpisodes(episodesData);
+        setChopinProfile(chopinProfileData);
+        setCategories(categoriesData);
+        setPopularWorks(popularWorksData);
+        setOpuses(opusesData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const categoryStats = getCategoryStats(opuses, categories);
 
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <HomeNavbar />
+        <main className={styles.main}>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
-        <div className={styles.twoColumnLayout}>
-          {/* Left Column - 75% */}
-          <div className={styles.leftColumn}>
-            {/* Popular Works Section */}
-            {popularWorks.length > 0 && (
-              <div className={styles.popularWorksRow}>
-                <h2 className={styles.popularWorksTitle}>Popular Works</h2>
-                <div className={styles.popularWorksGrid}>
-                  {popularWorks.map((work) => (
-                    <WorkCard key={work._id} work={work} variant="compact" />
-                  ))}
-                </div>
-              </div>
-            )}
+      <HomeNavbar />
+      {/* Hero Section */}
+      <section className={styles.heroSection} data-hero-section>
+        <div className={styles.heroContent}>
+          <h1 className={styles.heroTitle}>Chopin Index</h1>
+          <p className={styles.heroDescription}>
+            Discover the complete works of Frédéric Chopin. Explore his compositions, 
+            learn about his life, and dive deep into the world of classical piano music.
+          </p>
+          <Link href="/works" className={styles.browseButton}>
+            Browse Works
+          </Link>
+        </div>
+      </section>
 
-            {/* Work Categories */}
-            <div className={styles.categoriesRow}>
-              <div className={styles.categoriesGrid}>
-                {categoryStats.map((category) => {
-                  // Find the actual category data to get the correct slug
-                  const categoryData = categories.find(cat => cat._id === category.category);
-                  return (
-                    <Link 
-                      key={category.category} 
-                      href={`/categories/${categoryData?.slug || category.displayName.toLowerCase().replace(/\s+/g, '-')}`} 
-                      className={styles.categoryCard}
-                    >
-                    <div className={styles.categoryContent}>
-                      <h3 className={styles.categoryName}>{category.displayName}</h3>
-                      <span className={styles.categoryCount}>{category.count} works</span>
-                    </div>
-                  </Link>
-                );
-                })}
-              </div>
+      <main className={styles.main}>
+         <div style={{ zIndex: 9 }}>
+           {/* Popular Works Section - Full Width */}
+           {popularWorks.length > 0 && (
+             <div className={styles.popularWorksRow}>
+               <h2 className={`${styles.popularWorksTitle} ${hoveredCategoryId ? styles.faded : ''}`}>Popular Works</h2>
+               <div className={`${styles.popularWorksList} ${hoveredCategoryId ? styles.faded : ''}`}>
+                 {popularWorks.map((work) => {
+                   // Find the opus that contains this work
+                   const workOpus = opuses.find(opus => 
+                     opus.works && opus.works.some(opusWork => opusWork._id === work._id)
+                   );
+                   
+                   return (
+                     <div key={work._id} className={styles.popularWorkItem}>
+                       {workOpus && (
+                         <p className={styles.popularWorkOpus}>
+                           {workOpus.title.startsWith('Op.') ? workOpus.title : `Op. ${workOpus.title}`}
+                         </p>
+                       )}
+                       <Link href={`/works/${work.slug}`} className={styles.popularWorkLink}>
+                         {work.pieceTitle} in {work.key}
+                         {work.nickname && (
+                           <span className={styles.popularWorkNickname}> &ldquo;{work.nickname}&rdquo;</span>
+                         )}
+                       </Link>
+                       <div className={styles.popularWorkMeta}>
+                         <span className={styles.popularWorkYear}>
+                           {work.yearOfComposition}
+                         </span>
+                       </div>
+                     </div>
+                   );
+                 })}
+               </div>
+             </div>
+           )}
+
+           {/* Chopin Biography Section - Full Width Below */}
+           <div className={styles.chopinBioSection}>
+             <div className={`${styles.chopinCard} ${hoveredCategoryId ? styles.faded : ''}`}>
+               <div className={styles.chopinContent}>
+                 {chopinProfile?.profileImageUrl && (
+                   <div className={styles.profileImageContainer}>
+                     <Image
+                       src={chopinProfile.profileImageUrl}
+                       alt={chopinProfile.profileImageAlt || "Frédéric Chopin"}
+                       width={250}
+                       height={250}
+                       className={styles.profileImage}
+                     />
+                   </div>
+                 )}
+                 
+                 <div className={styles.chopinInfo}>
+                   <h2 className={styles.chopinName}>Frédéric Chopin</h2>
+                   
+                   {chopinProfile?.biography && (
+                     <div className={styles.biography}>
+                       <p className={`${styles.biographyText} ${hoveredCategoryId ? styles.faded : ''}`}>
+                         {chopinProfile.biography[0]?.children?.[0]?.text ? 
+                         chopinProfile.biography[0].children[0].text :
+                         "Frédéric Chopin was a Polish composer and virtuoso pianist of the Romantic period who wrote primarily for solo piano."}
+                       </p>
+                     </div>
+                   )}
+                   {!chopinProfile?.biography && (
+                     <div className={styles.biography}>
+                       <p className={`${styles.biographyText} ${hoveredCategoryId ? styles.faded : ''}`}>
+                         Frédéric Chopin was a Polish composer and virtuoso pianist of the Romantic period who wrote primarily for solo piano.
+                       </p>
+                     </div>
+                   )}
+                   
+                   <div className={styles.bioLinkContainer}>
+                     <Link href="/chopin-biography" className={`${styles.bioLink} ${hoveredCategoryId ? styles.faded : ''}`}>
+                       View Biography
+                     </Link>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+
+          {/* Work Categories - Full Width Below */}
+          <div className={styles.categoriesRow}>
+            <div className={styles.categoriesGrid}>
+              {categoryStats.map((category) => {
+                // Find the actual category data to get the correct slug
+                const categoryData = categories.find(cat => cat._id === category.category);
+                return (
+                  <Link 
+                    key={category.category} 
+                    href={`/categories/${categoryData?.slug || category.displayName.toLowerCase().replace(/\s+/g, '-')}`} 
+                    className={`${styles.categoryCard} ${hoveredCategoryId && hoveredCategoryId !== category.category ? styles.faded : ''}`}
+                    onMouseEnter={() => handleCategoryHover(categoryData)}
+                    onMouseLeave={handleCategoryLeave}
+                  >
+                  <div className={styles.categoryContent}>
+                    <h3 className={styles.categoryName}>{category.displayName}</h3>
+                  </div>
+                </Link>
+              );
+              })}
             </div>
           </div>
 
-          {/* Right Column - 25% */}
-          <div className={styles.rightColumn}>
-            <div className={styles.chopinCard}>
-              {chopinProfile?.profileImageUrl && (
-                <div className={styles.profileImageContainer}>
-                  <Image
-                    src={chopinProfile.profileImageUrl}
-                    alt={chopinProfile.profileImageAlt || "Frédéric Chopin"}
-                    width={200}
-                    height={200}
-                    className={styles.profileImage}
-                  />
-                </div>
-              )}
-              
-              <div className={styles.chopinInfo}>
-                <h2 className={styles.chopinName}>Frédéric Chopin</h2>
-                <div className={styles.chopinDates}>
-                  {chopinProfile?.birthDate && chopinProfile?.deathDate ? (
-                    <span className={styles.dates}>
-                      {new Date(chopinProfile.birthDate).getFullYear()} - {new Date(chopinProfile.deathDate).getFullYear()}
-                    </span>
-                  ) : (
-                    <span className={styles.dates}>
-                      1810 - 1849
-                    </span>
-                  )}
-                </div>
-                
-                {chopinProfile?.biography && (
-                  <div className={styles.biography}>
-                    <p className={styles.biographyText}>
-                      {chopinProfile.biography[0]?.children?.[0]?.text ? 
-                       chopinProfile.biography[0].children[0].text :
-                       "Frédéric Chopin was a Polish composer and virtuoso pianist of the Romantic period who wrote primarily for solo piano."}
-                    </p>
-                  </div>
-                )}
-                {!chopinProfile?.biography && (
-                  <div className={styles.biography}>
-                    <p className={styles.biographyText}>
-                      Frédéric Chopin was a Polish composer and virtuoso pianist of the Romantic period who wrote primarily for solo piano.
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
+          <div className={`${hoveredCategoryId ? styles.faded : ''}`}>
+            <PodcastSeasonToggle episodes={episodes} />
           </div>
         </div>
 
-        {/* Podcast Episodes Section with Season Toggle */}
-        <PodcastSeasonToggle episodes={episodes} />
+        {/* Category Image Background */}
+        <div className={styles.categoryImageBackground} id="categoryImageBackground">
+        </div>
+        
+        {/* Black Sheet */}
+        <div className={`${styles.blackSheet} ${styles.visible}`} id="blackSheet">
+        </div>
+        
+        {/* Black Gradient Overlay */}
+        <div className={styles.blackOverlay} id="blackOverlay">
+        </div>
       </main>
     </div>
   );

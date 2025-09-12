@@ -128,8 +128,6 @@ a {
 }
 
 .btn:hover {
-  background: var(--accent);
-  border-color: var(--accent);
   color: var(--dark-gray);
   text-decoration: none;
 }

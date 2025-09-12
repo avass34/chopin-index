@@ -1,233 +1,289 @@
+/* Page Layout */
 .page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem 0;
+  position: relative;
+  background: var(--background);
 }
 
-.container {
-  max-width: 900px;
+/* Fixed Background Image */
+.backgroundImage {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: var(--background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+/* Black Gradient Overlay */
+.blackOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 100%);
+  z-index: 2;
+}
+
+/* Main Content */
+.main {
+  position: relative;
+  z-index: 10;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
-.biographyCard {
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-}
-
-.header {
-  position: relative;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 4rem 2rem;
+/* Hero Section */
+.heroSection {
+  padding: 8rem 0 4rem 0;
   text-align: center;
-  color: white;
 }
 
-.headerContent {
-  position: relative;
-  z-index: 2;
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.title {
-  font-size: 3.5rem;
+.backLink {
+  display: inline-block;
+  color: var(--white);
+  text-decoration: none;
+  font-family: var(--font-headers);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--border);
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.backLink:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.heroTitle {
+  font-family: var(--font-headers);
+  font-size: 4rem;
   font-weight: 800;
-  margin-bottom: 1rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: var(--white);
+  margin: 0 0 1.5rem 0;
   letter-spacing: -0.02em;
 }
 
-.years {
-  font-size: 1.5rem;
-  opacity: 0.9;
-  font-weight: 300;
-  margin-bottom: 2rem;
-}
-
-.portrait {
-  margin-top: 2rem;
-  border-radius: 50%;
-  border: 6px solid white;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.portrait:hover {
-  transform: scale(1.05);
-}
-
-.content {
-  padding: 3rem 2rem;
-}
-
-.biographySection {
-  margin-bottom: 3rem;
-}
-
-.sectionTitle {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 3px solid #667eea;
-  display: inline-block;
-}
-
-.biographyText {
+.heroNationality {
+  font-family: var(--font-headers);
   font-size: 1.125rem;
-  line-height: 1.8;
-  color: #475569;
-  margin-bottom: 2rem;
-  text-align: justify;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 1rem 0;
 }
 
-.repertoireSection {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-radius: 12px;
-  padding: 2rem;
-  border: 1px solid #e2e8f0;
-}
-
-.repertoireTitle {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 3px solid #667eea;
-  display: inline-block;
-}
-
-.noWorksText {
-  color: #64748b;
-  font-size: 1rem;
-  line-height: 1.6;
-  text-align: center;
-  padding: 2rem;
-}
-
-.worksGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.workCard {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-decoration: none;
-  color: inherit;
-  border: 1px solid #e2e8f0;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.workCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-  border-color: #cbd5e1;
-}
-
-.workInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.workTitle {
+.heroDescription {
+  font-family: var(--font-paragraph);
   font-size: 1.25rem;
-  font-weight: 700;
-  color: #1e293b;
+  color: var(--white);
+  opacity: 0.9;
+  line-height: 1.6;
   margin: 0;
+}
+
+/* Biography Section */
+.biographySection {
+  margin: 4rem 0;
+}
+
+.biographyContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.biographyContainer {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  padding: 3rem;
+}
+
+.biographyHeading {
+  font-family: var(--font-headers);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 1rem 0;
   line-height: 1.3;
+}
+
+.biographySubheading {
+  font-family: var(--font-headers);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--white);
+  margin: 1.5rem 0 0.75rem 0;
+  line-height: 1.3;
+}
+
+.biographyParagraph {
+  font-family: var(--font-paragraph);
+  font-size: 1rem;
+  color: var(--white);
+  opacity: 0.9;
+  margin: 0 0 1rem 0;
+  line-height: 1.6;
+}
+
+.biographyQuote {
+  font-family: var(--font-paragraph);
+  font-size: 1rem;
+  color: var(--white);
+  opacity: 0.8;
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+  border-left: 3px solid var(--primary);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* Works Section */
+.worksSection {
+  margin: 4rem 0;
+}
+
+.worksTitle {
+  font-family: var(--font-headers);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 2rem 0;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.worksList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 3rem;
+  margin-top: 2rem;
+  column-fill: balance;
+}
+
+.workItem {
+  margin-bottom: 1.5rem;
+}
+
+.workLink {
+  font-family: var(--font-headers);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  line-height: 1.4;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.workLink:hover {
+  transform: translateX(8px);
+}
+
+.workNickname {
+  font-style: italic;
+  opacity: 0.8;
 }
 
 .workMeta {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  font-size: 0.875rem;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
 }
 
-.category {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+.opusInfo {
+  font-family: var(--font-headers);
+  font-size: 0.875rem;
   font-weight: 500;
-  font-size: 0.75rem;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.opus {
-  background: #f1f5f9;
-  color: #475569;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.year {
-  background: #fef3c7;
-  color: #92400e;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.duration {
-  background: #dbeafe;
-  color: #1e40af;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.workDescription {
-  color: #64748b;
+.categoryInfo {
+  font-family: var(--font-paragraph);
   font-size: 0.875rem;
-  line-height: 1.5;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  color: var(--white);
+  opacity: 0.7;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .worksList {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .heroTitle {
+    font-size: 3rem;
+  }
 }
 
 @media (max-width: 768px) {
-  .title {
+  .heroSection {
+    padding: 6rem 0 3rem 0;
+  }
+  
+  .heroTitle {
     font-size: 2.5rem;
   }
   
-  .years {
-    font-size: 1.25rem;
+  .heroDescription {
+    font-size: 1.125rem;
   }
   
-  .header {
-    padding: 3rem 1rem;
+  .biographyContainer {
+    padding: 2rem;
   }
   
-  .content {
-    padding: 2rem 1rem;
-  }
-  
-  .portrait {
-    width: 150px;
-    height: 150px;
-  }
-  
-  .worksGrid {
-    grid-template-columns: 1fr;
+  .worksList {
     gap: 1rem;
   }
   
-  .workCard {
-    padding: 1rem;
+  .workLink {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding: 0 0.5rem;
+  }
+  
+  .heroTitle {
+    font-size: 2rem;
+  }
+  
+  .backLink {
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .biographyContainer {
+    padding: 1.5rem;
+  }
+  
+  .worksTitle {
+    font-size: 1.5rem;
   }
 }
