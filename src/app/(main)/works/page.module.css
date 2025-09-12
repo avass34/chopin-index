@@ -281,11 +281,12 @@
   font-weight: 500;
   color: var(--white);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  display: inline-block;
 }
 
 .workLink:hover {
-  transform: translateX(8px);
+  transform: translateX(12px);
 }
 
 .workNickname {

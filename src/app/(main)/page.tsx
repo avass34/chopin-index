@@ -319,7 +319,7 @@ export default function Home() {
                  )}
                  
                  <div className={styles.chopinInfo}>
-                   <h2 className={styles.chopinName}>Frédéric Chopin</h2>
+                   <h2 className={styles.chopinName}>Who was Frédéric Chopin?</h2>
                    
                    {chopinProfile?.biography && (
                      <div className={styles.biography}>
@@ -347,6 +347,65 @@ export default function Home() {
                </div>
              </div>
            </div>
+           <div className={styles.chopinBioSection}>
+             <div className={`${styles.podcastCard} ${hoveredCategoryId ? styles.faded : ''}`}>
+               <div className={styles.podcastContent}>
+                 <div className={styles.podcastLogoContainer}>
+                   <Image
+                     src="/TCPLogo.png"
+                     alt="The Chopin Podcast"
+                     width={120}
+                     height={120}
+                     className={styles.podcastLogo}
+                     unoptimized
+                   />
+                 </div>
+                 
+                 <div className={styles.podcastInfo}>
+                   <h2 className={styles.podcastTitle}>The best podcast online about Chopin.</h2>
+                   
+                   <div className={styles.podcastDescription}>
+                     <p className={`${styles.podcastDescriptionText} ${hoveredCategoryId ? styles.faded : ''}`}>
+                       Explore the life and music of Frédéric Chopin through in-depth discussions, 
+                       historical context, and musical analysis. Join us as we journey through his 
+                       compositions and discover the stories behind the music.
+                     </p>
+                   </div>
+                   
+                   <div className={styles.podcastLinkContainer}>
+                     <Link href="https://www.chopinpodcast.com/" className={`${styles.podcastLink} ${hoveredCategoryId ? styles.faded : ''}`} target="_blank" rel="noopener noreferrer">
+                       Listen Now
+                     </Link>
+                   </div>
+                 </div>
+                 
+                 {/* Floating Orbs */}
+                 <div className={styles.floatingOrbs}>
+                   <div className={styles.orb1}>
+                     <Image
+                       src="/GarrickOlhssonCircle.png"
+                       alt="Garrick Ohlsson"
+                       width={250}
+                       height={250}
+                       className={styles.orbImage}
+                       unoptimized
+                     />
+                   </div>
+                   <div className={styles.orb2}>
+                     <Image
+                       src="/BenLaudeCircle.png"
+                       alt="Ben Laude"
+                       width={250}
+                       height={250}
+                       className={styles.orbImage2}
+                       unoptimized
+                     />
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+           
            {popularWorks.length > 0 && (
              <div className={styles.popularWorksRow}>
                <h2 className={`${styles.popularWorksTitle} ${hoveredCategoryId ? styles.faded : ''}`}>Popular Works</h2>
@@ -379,6 +438,11 @@ export default function Home() {
                    );
                  })}
                </div>
+               <div className={styles.popularWorksButtonContainer}>
+                 <Link href="/works" className={`${styles.browseButton} ${hoveredCategoryId ? styles.faded : ''}`}>
+                   Browse all works
+                 </Link>
+               </div>
              </div>
            )}
           {/* Work Categories - Full Width Below */}
@@ -407,6 +471,60 @@ export default function Home() {
           <div className={`${hoveredCategoryId ? styles.faded : ''}`}>
             <PodcastSeasonToggle episodes={episodes} />
           </div>
+        </div>
+
+        {/* All Opuses Section */}
+        <div className={`${styles.worksSection} ${hoveredCategoryId ? styles.faded : ''}`}>
+          <h2 className={`${styles.worksTitle} ${hoveredCategoryId ? styles.faded : ''}`}>
+            All Opuses
+          </h2>
+          {opuses.length === 0 ? (
+            <div className={styles.emptyState}>
+              <p>No opuses found. Add some opuses in your Sanity Studio!</p>
+              <a href="/studio" className={styles.primary}>
+                Open Sanity Studio
+              </a>
+            </div>
+          ) : (
+            <div className={`${styles.opusesList} ${hoveredCategoryId ? styles.faded : ''}`}>
+              {opuses.map((opus) => (
+                <div 
+                  key={opus._id} 
+                  className={`${styles.opusItem} ${hoveredCategoryId ? styles.faded : ''}`}
+                >
+                  <div className={styles.opusDate}>
+                    {new Date(opus.date).getFullYear()}
+                  </div>
+                  <h3 className={styles.opusTitle}>
+                    Opus {opus.title}
+                  </h3>
+              {opus.works && opus.works.length > 0 && (
+                <ul className={`${styles.worksList} ${opus.works.length === 1 ? styles.singleWork : styles.multipleWorks}`}>
+                  {opus.works.map((work, index) => {
+                    const workData = work as Work;
+                    return (
+                      <li key={work._id} className={styles.workItem}>
+                        {opus.works.length > 1 && index === 0 && <span className={styles.stapleTop}>┌</span>}
+                        {opus.works.length > 1 && index === opus.works.length - 1 && <span className={styles.stapleBottom}>└</span>}
+                        {opus.works.length > 1 && index > 0 && index < opus.works.length - 1 && <span className={styles.stapleMiddle}>├</span>}
+                        <Link 
+                          href={`/works/${work.slug}`} 
+                          className={styles.workLink}
+                        >
+                          {work.pieceTitle} in {workData.key ? formatKey(workData.key) : 'Unknown Key'}
+                          {workData.nickname && (
+                            <span className={styles.workNickname}> - {workData.nickname}</span>
+                          )}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Category Image Background */}

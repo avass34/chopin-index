@@ -203,12 +203,13 @@
   font-weight: 500;
   color: var(--white);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: all 0.3s ease;
   line-height: 1.5;
+  display: inline-block;
 }
 
 .workLink:hover {
-  transform: translateX(8px);
+  transform: translateX(12px);
 }
 
 .workNickname {

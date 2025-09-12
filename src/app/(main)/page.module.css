@@ -73,7 +73,7 @@
 
 /* Chopin Biography Section */
 .chopinBioSection {
-  margin-bottom: 15vh;
+  margin-bottom: 25vh;
   z-index: 10;
 }
 
@@ -93,11 +93,18 @@
 /* Chopin Profile Card */
 .chopinCard {
   z-index: 10;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.podcastCard {
+  z-index: 10;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   padding: 2rem;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .chopinContent {
@@ -106,15 +113,23 @@
   gap: 2rem;
 }
 
+.podcastContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 1.5rem;
+  position: relative;
+}
+
 .chopinInfo {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
   flex: 1;
+  align-self: center;
 }
-
-
 
 .profileImageContainer {
   display: flex;
@@ -127,6 +142,116 @@
   transition: transform 0.3s ease;
   max-width: 100%;
   height: auto;
+}
+
+.podcastLogoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.podcastLogo {
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.podcastInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 1rem;
+}
+
+.podcastTitle {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0;
+  text-align: right;
+}
+
+.podcastDescription {
+  max-width: 600px;
+}
+
+.podcastDescriptionText {
+  color: var(--text-secondary);
+  font-family: var(--font-paragraph);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+  text-align: right;
+}
+
+.podcastLinkContainer {
+  margin-top: 0.5rem;
+}
+
+.podcastLink {
+  display: inline-block;
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-family: var(--font-headers);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.podcastLink:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Floating Orbs */
+.floatingOrbs {
+  position: absolute;
+  left: -150px;
+  top: 50%;
+  z-index: 1;
+}
+
+.orb1 {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  left: 200px;
+  bottom: -125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orb2 {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  left: 450px;
+  bottom: -70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orbImage {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 250px;
+  height: 250px;
+}
+.orbImage2 {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 300px;
+  height: 300px;
 }
 .chopinName {
   font-family: var(--font-heading);
@@ -163,10 +288,6 @@
   font-family: var(--font-paragraph);
   font-size: 0.9rem;
   margin: 0;
-}
-
-.bioLinkContainer {
-  margin-top: 1.5rem;
 }
 
 .bioLink {
@@ -216,6 +337,170 @@
   z-index: 10;
 }
 
+.popularWorksButtonContainer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Works Section */
+.worksSection {
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 10;
+}
+
+.worksTitle {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 3rem 0;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+
+/* Opuses List */
+.opusesList {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3rem 4rem;
+  margin-top: 2rem;
+  column-fill: balance;
+}
+
+.opusItem {
+  margin-bottom: 2rem;
+  transition: opacity 0.3s ease;
+}
+
+.opusItem.faded {
+  opacity: 0.3;
+}
+
+.opusTitle {
+  font-family: var(--font-headers);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 0.05em;
+}
+
+.opusDate {
+  font-family: var(--font-headers);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.worksList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.worksList.singleWork {
+  gap: 0;
+}
+
+.worksList.multipleWorks {
+  gap: 0.25rem;
+}
+
+.workItem {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.worksList.singleWork .workItem {
+  padding-left: 0;
+}
+
+.stapleTop,
+.stapleMiddle,
+.stapleBottom {
+  position: absolute;
+  left: 0;
+  color: var(--white);
+  font-family: monospace;
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 0.7;
+}
+
+.stapleTop {
+  top: 0;
+}
+
+.stapleMiddle {
+  top: 0;
+}
+
+.stapleBottom {
+  top: 0;
+}
+
+.workLink {
+  font-family: var(--font-headers);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--white);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.workLink:hover {
+  transform: translateX(12px);
+}
+
+.workNickname {
+  color: var(--text-muted);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--surface);
+  border-radius: 20px;
+  border: 2px solid var(--border);
+}
+
+.emptyState p {
+  color: var(--white);
+  font-family: var(--font-paragraph);
+  font-size: 1.125rem;
+  margin: 0 0 2rem 0;
+}
+
+.primary {
+  display: inline-block;
+  background: var(--primary);
+  color: var(--background);
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-family: var(--font-headers);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.primary:hover {
+  transform: translateY(-2px);
+}
+
 .popularWorkItem {
   margin-bottom: 1.5rem;
 }
@@ -235,14 +520,14 @@
   font-weight: 500;
   color: var(--white);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: all 0.3s ease;
   line-height: 1.4;
-  display: block;
+  display: inline-block;
   margin-bottom: 0.5rem;
 }
 
 .popularWorkLink:hover {
-  color: var(--primary);
+  transform: translateX(12px);
 }
 
 .popularWorkNickname {
@@ -489,6 +774,42 @@
     font-size: 1rem;
   }
   
+  .podcastTitle {
+    font-size: 1.75rem;
+  }
+  
+  .podcastDescriptionText {
+    font-size: 0.95rem;
+  }
+  
+  .podcastLink {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+  
+  .worksTitle {
+    font-size: 2rem;
+  }
+  
+  .opusesList {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 3rem;
+  }
+  
+  .floatingOrbs {
+    left: -120px;
+  }
+  
+  .orb1, .orb2 {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .orbImage {
+    width: 120px;
+    height: 120px;
+  }
+  
   .title {
     font-size: 2.5rem;
     margin-bottom: 2rem;
@@ -561,6 +882,42 @@
   .browseButton {
     padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
+  }
+  
+  .podcastTitle {
+    font-size: 1.5rem;
+  }
+  
+  .podcastDescriptionText {
+    font-size: 0.9rem;
+  }
+  
+  .podcastLink {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .worksTitle {
+    font-size: 1.75rem;
+  }
+  
+  .opusesList {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .floatingOrbs {
+    left: -90px;
+  }
+  
+  .orb1, .orb2 {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .orbImage {
+    width: 90px;
+    height: 90px;
   }
   
   .main {
