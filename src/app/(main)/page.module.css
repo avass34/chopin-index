@@ -387,6 +387,17 @@
   letter-spacing: 0.05em;
 }
 
+.opusTitleLink {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.opusTitleLink:hover {
+  transform: translateX(12px);
+}
+
 .opusDate {
   font-family: var(--font-headers);
   font-size: 0.875rem;
@@ -503,6 +514,8 @@
 
 .popularWorkItem {
   margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .popularWorkOpus {
@@ -512,6 +525,13 @@
   color: var(--white);
   margin: 0 0 0.5rem 0;
   letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.popularWorkOpus:hover {
+  transform: translateX(12px);
 }
 
 .popularWorkLink {

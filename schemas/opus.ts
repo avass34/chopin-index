@@ -24,13 +24,6 @@ export default defineType({
       description: 'URL-friendly identifier for the opus (e.g., opus-9, opus-11)',
     }),
     defineField({
-      name: 'date',
-      title: 'Date',
-      type: 'date',
-      validation: (Rule) => Rule.required(),
-      description: 'Date when the opus was published or completed',
-    }),
-    defineField({
       name: 'category',
       title: 'Category',
       type: 'reference',
@@ -42,21 +35,20 @@ export default defineType({
       name: 'works',
       title: 'Works in this Opus',
       type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'work' }] }],
+      of: [{ type: 'reference', to: [{ type: 'pieces' }] }],
       description: 'Select all works that belong to this opus',
     }),
   ],
   preview: {
     select: {
       title: 'title',
-      date: 'date',
       works: 'works',
       category: 'category.name',
     },
     prepare(selection) {
-      const { title, date, works, category } = selection
+      const { title, works, category } = selection
       const workCount = works ? works.length : 0
-      const subtitle = `${category || 'No category'} • ${date || 'No date'} • ${workCount} work${workCount !== 1 ? 's' : ''}`
+      const subtitle = `${category || 'No category'} • ${workCount} work${workCount !== 1 ? 's' : ''}`
       return {
         title: title || 'Untitled Opus',
         subtitle: subtitle,

@@ -27,7 +27,7 @@ export async function getChopinProfile() {
 // Helper function to get Popular Works
 export async function getPopularWorks() {
   return client.fetch(`
-    *[_type == "work" && isPopular == true] | order(yearOfComposition desc) {
+    *[_type == "pieces" && isPopular == true] | order(yearOfComposition desc) {
       _id,
       "slug": slug.current,
       pieceTitle,

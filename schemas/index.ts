@@ -2,7 +2,7 @@ import { type SchemaTypeDefinition } from 'sanity'
 
 // Import your schema types here
 import pianist from './pianist'
-import work from './work'
+import pieces from './pieces'
 import podcastSnippet from './podcastSnippet'
 import chopinProfile from './chopinProfile'
 import imageGallery from './imageGallery'
@@ -12,7 +12,7 @@ import opus from './opus'
 export const schemaTypes: SchemaTypeDefinition[] = [
   // Add your schema types here
   pianist,
-  work,
+  pieces,
   podcastSnippet,
   chopinProfile,
   imageGallery,

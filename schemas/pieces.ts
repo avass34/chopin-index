@@ -1,8 +1,8 @@
 import { defineField, defineType } from 'sanity'
 
 export default defineType({
-  name: 'work',
-  title: 'Work',
+  name: 'pieces',
+  title: 'Pieces',
   type: 'document',
   fields: [
     defineField({
@@ -87,6 +87,13 @@ export default defineType({
       type: 'number',
       validation: (Rule) => Rule.required().min(1700).max(2024),
       description: 'Year when the piece was composed',
+    }),
+    defineField({
+      name: 'yearOfPublication',
+      title: 'Year of Publication',
+      type: 'number',
+      validation: (Rule) => Rule.min(1700).max(2024),
+      description: 'Year when the piece was first published',
     }),
     defineField({
       name: 'duration',

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import styles from "./page.module.css";
 import { client, getPopularWorks } from "../../../lib/sanity.client";
 import { getAllPodcastSnippetsQuery, getChopinProfileQuery, getAllCategoriesQuery, getAllOpusesQuery } from "../../../lib/queries";
+import { calculateOpusDateRange, getOpusEarliestYear } from "../../../lib/dateUtils";
 import PodcastSeasonToggle from "../../components/PodcastSeasonToggle";
 import HomeNavbar from "../../components/HomeNavbar";
 
@@ -56,7 +57,7 @@ interface Opus {
   _id: string;
   title: string;
   slug: string;
-  date: string;
+  works?: Work[];
   category: {
     _id: string;
     name: string;
@@ -65,11 +66,6 @@ interface Opus {
     imageUrl?: string;
     imageDescription?: string;
   };
-  works: Array<{
-    _id: string;
-    pieceTitle: string;
-    slug: string;
-  }>;
 }
 
 interface PodcastEpisode {
@@ -419,9 +415,9 @@ export default function Home() {
                    return (
                      <div key={work._id} className={styles.popularWorkItem}>
                        {workOpus && (
-                         <p className={styles.popularWorkOpus}>
+                         <Link href={`/opus/${workOpus.slug}`} className={styles.popularWorkOpus}>
                            {workOpus.title.startsWith('Op.') ? workOpus.title : `Op. ${workOpus.title}`}
-                         </p>
+                         </Link>
                        )}
                        <Link href={`/works/${work.slug}`} className={styles.popularWorkLink}>
                          {work.pieceTitle} in {formatKey(work.key)}
@@ -480,10 +476,7 @@ export default function Home() {
           </h2>
           {opuses.length === 0 ? (
             <div className={styles.emptyState}>
-              <p>No opuses found. Add some opuses in your Sanity Studio!</p>
-              <a href="/studio" className={styles.primary}>
-                Open Sanity Studio
-              </a>
+              <p>No opuses found.</p>
             </div>
           ) : (
             <div className={`${styles.opusesList} ${hoveredCategoryId ? styles.faded : ''}`}>
@@ -492,21 +485,28 @@ export default function Home() {
                   key={opus._id} 
                   className={`${styles.opusItem} ${hoveredCategoryId ? styles.faded : ''}`}
                 >
-                  <div className={styles.opusDate}>
-                    {new Date(opus.date).getFullYear()}
-                  </div>
+                  {(() => {
+                    const dateRange = calculateOpusDateRange(opus);
+                    return dateRange && (
+                      <div className={styles.opusDate}>
+                        {dateRange}
+                      </div>
+                    );
+                  })()}
                   <h3 className={styles.opusTitle}>
-                    Opus {opus.title}
+                    <Link href={`/opus/${opus.slug}`} className={styles.opusTitleLink}>
+                      Opus {opus.title}
+                    </Link>
                   </h3>
               {opus.works && opus.works.length > 0 && (
-                <ul className={`${styles.worksList} ${opus.works.length === 1 ? styles.singleWork : styles.multipleWorks}`}>
+                <ul className={`${styles.worksList} ${opus.works?.length === 1 ? styles.singleWork : styles.multipleWorks}`}>
                   {opus.works.map((work, index) => {
                     const workData = work as Work;
                     return (
                       <li key={work._id} className={styles.workItem}>
-                        {opus.works.length > 1 && index === 0 && <span className={styles.stapleTop}>┌</span>}
-                        {opus.works.length > 1 && index === opus.works.length - 1 && <span className={styles.stapleBottom}>└</span>}
-                        {opus.works.length > 1 && index > 0 && index < opus.works.length - 1 && <span className={styles.stapleMiddle}>├</span>}
+                        {opus.works?.length && opus.works.length > 1 && index === 0 && <span className={styles.stapleTop}>┌</span>}
+                        {opus.works?.length && opus.works.length > 1 && index === opus.works.length - 1 && <span className={styles.stapleBottom}>└</span>}
+                        {opus.works?.length && opus.works.length > 1 && index > 0 && index < opus.works.length - 1 && <span className={styles.stapleMiddle}>├</span>}
                         <Link 
                           href={`/works/${work.slug}`} 
                           className={styles.workLink}

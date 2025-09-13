@@ -2,10 +2,21 @@
 
 import Link from "next/link";
 import { getAllCategoriesQuery, getAllOpusesQuery } from '../../../../lib/queries';
+import { calculateOpusDateRange, getOpusEarliestYear, getOpusAllYears } from '../../../../lib/dateUtils';
 import { client } from '../../../../lib/sanity.client';
 import styles from './page.module.css';
 import Navbar from '../../../components/Navbar';
 import { useEffect, useState } from 'react';
+
+interface Work {
+  _id: string;
+  pieceTitle: string;
+  nickname?: string;
+  slug: string;
+  key: string;
+  yearOfComposition: number;
+  yearOfPublication?: number;
+}
 
 interface Category {
   _id: string;
@@ -20,7 +31,7 @@ interface Opus {
   _id: string;
   title: string;
   slug: string;
-  date: string;
+  works?: Work[];
   category: {
     _id: string;
     name: string;
@@ -29,13 +40,6 @@ interface Opus {
     imageUrl?: string;
     imageDescription?: string;
   };
-  works: Array<{
-    _id: string;
-    pieceTitle: string;
-    nickname?: string;
-    slug: string;
-    key: string;
-  }>;
 }
 
 async function getCategories(): Promise<Category[]> {
@@ -185,13 +189,15 @@ export default function WorksPage() {
         <div className={styles.timeline}>
           <div className={styles.timelineContainer}>
             {(() => {
-              // Group opuses by year
+              // Group opuses by year - opuses can appear in multiple years
               const opusesByYear = opuses.reduce((acc, opus) => {
-                const year = new Date(opus.date).getFullYear();
-                if (!acc[year]) {
-                  acc[year] = [];
-                }
-                acc[year].push(opus);
+                const years = getOpusAllYears(opus);
+                years.forEach(year => {
+                  if (!acc[year]) {
+                    acc[year] = [];
+                  }
+                  acc[year].push(opus);
+                });
                 return acc;
               }, {} as Record<number, typeof opuses>);
 
@@ -207,8 +213,9 @@ export default function WorksPage() {
                   const yearGap = year - prevYear;
                   
                   // Base spacing for consecutive years (gap = 1)
-                  const baseSpacing = 80; // pixels
-                  return baseSpacing * yearGap;
+                  const baseSpacing = 50; // pixels
+                  const spacing = baseSpacing * yearGap;
+                  return spacing;
                 };
                 
                 return (
@@ -222,7 +229,7 @@ export default function WorksPage() {
                         <div className={styles.opusCount}>({opusesByYear[year].length})</div>
                       )}
                       {opusesByYear[year].map((opus) => (
-                        <Link key={opus._id} href={`/works/${opus.works[0]?.slug || '#'}`} className={styles.timelineItem}>
+                        <Link key={opus._id} href={`/works/${opus.works?.[0]?.slug || '#'}`} className={styles.timelineItem}>
                           <div className={styles.opusLabel}>Op. {opus.title}</div>
                         </Link>
                       ))}
@@ -306,19 +313,26 @@ export default function WorksPage() {
                     key={opus._id} 
                     className={`${styles.opusItem} ${hoveredCategoryId ? styles.faded : ''}`}
                   >
-                    <div className={styles.opusDate}>
-                      {new Date(opus.date).getFullYear()}
-                    </div>
+                    {(() => {
+                      const dateRange = calculateOpusDateRange(opus);
+                      return dateRange && (
+                        <div className={styles.opusDate}>
+                          {dateRange}
+                        </div>
+                      );
+                    })()}
                     <h3 className={styles.opusTitle}>
-                      Opus {opus.title}
+                      <Link href={`/opus/${opus.slug}`} className={styles.opusTitleLink}>
+                        Opus {opus.title}
+                      </Link>
                     </h3>
                 {opus.works && opus.works.length > 0 && (
-                  <ul className={`${styles.worksList} ${opus.works.length === 1 ? styles.singleWork : styles.multipleWorks}`}>
+                  <ul className={`${styles.worksList} ${opus.works?.length === 1 ? styles.singleWork : styles.multipleWorks}`}>
                     {opus.works.map((work, index) => (
                       <li key={work._id} className={styles.workItem}>
-                        {opus.works.length > 1 && index === 0 && <span className={styles.stapleTop}>┌</span>}
-                        {opus.works.length > 1 && index === opus.works.length - 1 && <span className={styles.stapleBottom}>└</span>}
-                        {opus.works.length > 1 && index > 0 && index < opus.works.length - 1 && <span className={styles.stapleMiddle}>├</span>}
+                        {opus.works?.length && opus.works.length > 1 && index === 0 && <span className={styles.stapleTop}>┌</span>}
+                        {opus.works?.length && opus.works.length > 1 && index === opus.works.length - 1 && <span className={styles.stapleBottom}>└</span>}
+                        {opus.works?.length && opus.works.length > 1 && index > 0 && index < opus.works.length - 1 && <span className={styles.stapleMiddle}>├</span>}
                         <Link 
                           href={`/works/${work.slug}`} 
                           className={styles.workLink}

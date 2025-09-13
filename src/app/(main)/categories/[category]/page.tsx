@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getAllOpusesQuery, getAllCategoriesQuery, getAllPodcastSnippetsQuery } from '../../../../../lib/queries';
+import { calculateOpusDateRange, getOpusEarliestYear } from '../../../../../lib/dateUtils';
 import { client } from '../../../../../lib/sanity.client';
 import styles from './page.module.css';
 import Navbar from '../../../../components/Navbar';
@@ -110,7 +111,7 @@ interface Opus {
   _id: string;
   title: string;
   slug: string;
-  date: string;
+  works?: Work[];
   category: {
     _id: string;
     name: string;
@@ -118,7 +119,6 @@ interface Opus {
     slug: string;
     imageUrl?: string;
   };
-  works: Work[];
 }
 
 interface Category {
@@ -223,7 +223,11 @@ export default async function CategoryPage({ params }: PageProps) {
   );
 
   // Sort opuses by date
-  categoryOpuses.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  categoryOpuses.sort((a, b) => {
+    const aYear = getOpusEarliestYear(a);
+    const bYear = getOpusEarliestYear(b);
+    return aYear - bYear;
+  });
 
   return (
     <div className={styles.page}>
@@ -269,19 +273,26 @@ export default async function CategoryPage({ params }: PageProps) {
           <div className={styles.opusList}>
             {categoryOpuses.map((opus) => (
               <div key={opus._id} className={styles.opusItem}>
-                <div className={styles.opusDate}>
-                  {new Date(opus.date).getFullYear()}
-                </div>
+                {(() => {
+                  const dateRange = calculateOpusDateRange(opus);
+                  return dateRange && (
+                    <div className={styles.opusDate}>
+                      {dateRange}
+                    </div>
+                  );
+                })()}
                 <h3 className={styles.opusTitle}>
-                  Opus {opus.title}
+                  <Link href={`/opus/${opus.slug}`} className={styles.opusTitleLink}>
+                    Opus {opus.title}
+                  </Link>
                 </h3>
                 {opus.works && opus.works.length > 0 && (
-                  <ul className={`${styles.worksList} ${opus.works.length === 1 ? styles.singleWork : styles.multipleWorks}`}>
+                  <ul className={`${styles.worksList} ${opus.works?.length === 1 ? styles.singleWork : styles.multipleWorks}`}>
                     {opus.works.map((work, index) => (
                       <li key={work._id} className={styles.workItem}>
-                        {opus.works.length > 1 && index === 0 && <span className={styles.stapleTop}>┌</span>}
-                        {opus.works.length > 1 && index === opus.works.length - 1 && <span className={styles.stapleBottom}>└</span>}
-                        {opus.works.length > 1 && index > 0 && index < opus.works.length - 1 && <span className={styles.stapleMiddle}>├</span>}
+                        {opus.works?.length && opus.works.length > 1 && index === 0 && <span className={styles.stapleTop}>┌</span>}
+                        {opus.works?.length && opus.works.length > 1 && index === opus.works.length - 1 && <span className={styles.stapleBottom}>└</span>}
+                        {opus.works?.length && opus.works.length > 1 && index > 0 && index < opus.works.length - 1 && <span className={styles.stapleMiddle}>├</span>}
                         <Link href={`/works/${work.slug}`} className={styles.workLink}>
                           {work.pieceTitle} in {formatKey(work.key)}
                           {work.nickname && (

@@ -16,6 +16,7 @@ interface Work {
   nickname?: string;
   isPopular: boolean;
   yearOfComposition: number;
+  yearOfPublication?: number;
   duration: string;
   description: string;
   movements?: string[];
@@ -416,6 +417,12 @@ export default function WorkPage({ params }: { params: Promise<{ slug: string }>
                     <div className={styles.metaLabel}>Year of Comp.</div>
                     <div className={styles.metaValue}>{work.yearOfComposition}</div>
                   </div>
+                  {work.yearOfPublication && (
+                    <div className={styles.metaBubble}>
+                      <div className={styles.metaLabel}>Year of Pub.</div>
+                      <div className={styles.metaValue}>{work.yearOfPublication}</div>
+                    </div>
+                  )}
                   <div className={styles.metaBubble}>
                     <div className={styles.metaLabel}>Duration</div>
                     <div className={styles.metaValue}>c. {formatDuration(work.duration)}</div>

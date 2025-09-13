@@ -27,13 +27,14 @@ export const getPianistBySlugQuery = groq`
 `
 
 export const getAllWorksQuery = groq`
-  *[_type == "work"] | order(yearOfComposition desc) {
+  *[_type == "pieces"] | order(yearOfComposition desc) {
     _id,
     "slug": slug.current,
     pieceTitle,
     nickname,
     isPopular,
     yearOfComposition,
+    yearOfPublication,
     duration,
     description,
     movements,
@@ -63,12 +64,13 @@ export const getAllWorksQuery = groq`
 `
 
 export const getWorkBySlugQuery = groq`
-  *[_type == "work" && slug.current == $slug][0] {
+  *[_type == "pieces" && slug.current == $slug][0] {
     _id,
     pieceTitle,
     nickname,
     isPopular,
     yearOfComposition,
+    yearOfPublication,
     duration,
     description,
     movements,
@@ -150,7 +152,7 @@ export const getPodcastSnippetBySlugQuery = groq`
 `
 
 export const getWorksByPianistQuery = groq`
-  *[_type == "work" && references($pianistId)] | order(yearOfComposition desc) {
+  *[_type == "pieces" && references($pianistId)] | order(yearOfComposition desc) {
     _id,
     "slug": slug.current,
     pieceTitle,
@@ -178,7 +180,7 @@ export const getWorksByPianistQuery = groq`
 `
 
 export const getWorksByPodcastQuery = groq`
-  *[_type == "work" && references($podcastId)] {
+  *[_type == "pieces" && references($podcastId)] {
     _id,
     "slug": slug.current,
     pieceTitle,
@@ -193,7 +195,7 @@ export const getWorksByPodcastQuery = groq`
 `
 
 export const getPopularWorksQuery = groq`
-  *[_type == "work" && isPopular == true] | order(yearOfComposition desc) {
+  *[_type == "pieces" && isPopular == true] | order(yearOfComposition desc) {
     _id,
     "slug": slug.current,
     pieceTitle,
@@ -247,11 +249,10 @@ export const getAllImageGalleryQuery = groq`
 `
 
 export const getAllOpusesQuery = groq`
-  *[_type == "opus"] | order(date asc) {
+  *[_type == "opus"] | order(title asc) {
     _id,
     title,
     "slug": slug.current,
-    date,
     "category": category->{
       _id,
       name,
@@ -265,6 +266,7 @@ export const getAllOpusesQuery = groq`
       pieceTitle,
       nickname,
       key,
+      yearOfComposition,
       "slug": slug.current
     }
   }
@@ -275,8 +277,7 @@ export const getOpusBySlugQuery = groq`
     _id,
     title,
     "slug": slug.current,
-    date,
-    "category": opus->category->{
+    "category": category->{
       _id,
       name,
       pluralName,
@@ -288,10 +289,35 @@ export const getOpusBySlugQuery = groq`
       _id,
       pieceTitle,
       "slug": slug.current,
+      key,
+      nickname,
       yearOfComposition,
+      yearOfPublication,
       duration,
       description,
-      movements
+      movements,
+      notablePerformers[]-> {
+        _id,
+        name,
+        "slug": slug.current
+      },
+      podcastHighlights[] {
+        spotifyTimestamp,
+        youtubeTimestamp,
+        appleTimestamp,
+        title,
+        transcript,
+        podcast-> {
+          _id,
+          title,
+          description,
+          seasonNumber,
+          episodeNumber,
+          spotifyUrl,
+          youtubeUrl,
+          applePodcastUrl
+        }
+      }
     }
   }
 `
